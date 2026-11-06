@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Room or Table | PrimeWave Hotel</title>
+<meta name="description" content="Book rooms and tables at PrimeWave Hotel Nairobi. Manage your bookings, view receipts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0a3d62;--navy2:#08304d;--navy3:#062540;
+  --gold:#c9a84c;--gold2:#e8c96d;
+  --green:#27ae60;--green-bg:#eafaf1;--green-txt:#1a7a44;
+  --amber:#e67e22;--amber-bg:#fef5ec;--amber-txt:#935112;
+  --red:#e74c3c;--red-bg:#fdedec;--red-txt:#a93226;
+  --blue:#2980b9;--blue-bg:#eaf4fb;--blue-txt:#1a5276;
+  --light:#f7f5f0;--white:#fff;
+  --text:#1e2530;--muted:#6b7280;--border:#e5e7eb;
+  --shadow:0 4px 24px rgba(10,61,98,.11);
+  --shadow-lg:0 8px 40px rgba(10,61,98,.16);
+  --r:10px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--text);overflow-x:hidden;}
+
+header{background:var(--navy);padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;height:64px;box-shadow:0 2px 20px rgba(0,0,0,.3);}
+.logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold);letter-spacing:2px;text-decoration:none;}
+.logo em{color:var(--white);font-style:normal;font-weight:400;}
+nav{display:flex;align-items:center;gap:4px;}
+nav a{color:rgba(255,255,255,.75);text-decoration:none;padding:7px 14px;border-radius:5px;font-size:13.5px;font-weight:500;transition:all .18s;}
+nav a:hover{background:rgba(255,255,255,.1);color:var(--gold);}
+.nav-book{background:var(--gold)!important;color:var(--navy)!important;font-weight:600!important;margin-left:6px;}
+.nav-user{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 14px 5px 5px;color:rgba(255,255,255,.85);font-size:12.5px;margin-left:8px;}
+.nav-av{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--navy3) 100%);padding:44px 40px 40px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;bottom:-80px;left:-80px;width:360px;height:360px;background:radial-gradient(circle,rgba(201,168,76,.13) 0%,transparent 70%);}
+.hero::after{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(201,168,76,.07) 0%,transparent 70%);}
+.hero-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;position:relative;z-index:1;}
+.hero-text h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,38px);color:var(--white);margin-bottom:6px;}
+.hero-text p{color:rgba(255,255,255,.6);font-size:14px;line-height:1.7;}
+.hero-stats{display:flex;gap:16px;flex-wrap:wrap;}
+.stat-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 20px;text-align:center;min-width:86px;}
+.stat-pill .sn{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);font-weight:700;}
+.stat-pill .sl{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+
+.tab-bar{background:var(--white);border-bottom:2px solid var(--border);display:flex;max-width:100%;overflow-x:auto;}
+.tab-btn{display:flex;align-items:center;gap:8px;padding:16px 28px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.tab-btn:hover{color:var(--navy);}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--gold);font-weight:600;}
+.tab-badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;}
+.tab-btn:not(.active) .tab-badge{background:var(--border);color:var(--muted);}
+
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+.steps{background:var(--white);padding:0 40px;display:flex;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.05);border-bottom:1px solid var(--border);}
+.step{display:flex;align-items:center;gap:9px;padding:14px 22px;border-right:1px solid #eee;color:var(--muted);font-size:13px;transition:color .2s;}
+.step:last-child{border-right:none;}
+.step.active{color:var(--navy);font-weight:600;}
+.step.done{color:var(--green);}
+.step-n{width:24px;height:24px;border-radius:50%;background:#eee;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;flex-shrink:0;transition:all .2s;}
+.step.active .step-n{background:var(--gold);color:var(--navy);}
+.step.done .step-n{background:var(--green);color:#fff;}
+
+.layout{display:grid;grid-template-columns:1fr 370px;gap:28px;max-width:1080px;margin:32px auto 80px;padding:0 40px;align-items:start;}
+.page-wrap{max-width:1080px;margin:32px auto 80px;padding:0 40px;}
+
+.fcard{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px;transition:box-shadow .2s;}
+.fcard:hover{box-shadow:var(--shadow-lg);}
+.fsection{padding:26px 30px;border-bottom:1px solid #f2f2f2;}
+.fsection:last-child{border-bottom:none;}
+.stitle{font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:18px;display:flex;align-items:center;gap:11px;}
+.stitle-num{width:28px;height:28px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;flex-shrink:0;}
+
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.frow.s1{grid-template-columns:1fr;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;}
+.fg label .req{color:var(--red);margin-left:2px;}
+.fg label .opt{font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;margin-left:4px;}
+.fg input,.fg select{padding:11px 13px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--text);background:#fafafa;outline:none;transition:border-color .18s,box-shadow .18s;-webkit-appearance:none;}
+.fg input:focus,.fg select:focus{border-color:var(--navy);background:var(--white);box-shadow:0 0 0 3px rgba(10,61,98,.07);}
+.fg input.err,.fg select.err{border-color:var(--red);background:var(--red-bg);}
+.ferr{font-size:11px;color:var(--red);display:none;margin-top:3px;}
+.ferr.show{display:block;}
+.time-hint{font-size:11px;color:var(--muted);margin-top:3px;}
+
+.guest-pill{display:flex;align-items:center;gap:11px;background:rgba(10,61,98,.04);border:1px solid rgba(10,61,98,.11);border-radius:8px;padding:11px 14px;margin-bottom:20px;}
+.gp-av{width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.gp-info p{font-size:13.5px;font-weight:600;color:var(--navy);}
+.gp-info span{font-size:12px;color:var(--muted);}
+.gp-switch{margin-left:auto;font-size:11.5px;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;transition:color .15s;}
+.gp-switch:hover{color:var(--navy);}
+
+.room-prev{background:var(--light);border-radius:8px;padding:14px;display:flex;gap:14px;align-items:center;margin-bottom:16px;border:1.5px solid transparent;transition:border-color .2s,background .2s;min-height:72px;}
+.room-prev.loaded{border-color:var(--gold);background:rgba(201,168,76,.04);}
+.room-prev img{width:78px;height:64px;object-fit:cover;border-radius:6px;flex-shrink:0;}
+.rp-info h4{font-family:'Playfair Display',serif;font-size:15px;color:var(--navy);margin-bottom:3px;}
+.rp-info p{font-size:12px;color:var(--muted);line-height:1.45;}
+.rp-price{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);font-weight:700;margin-top:5px;}
+.rp-price span{font-size:11.5px;font-weight:400;color:var(--muted);font-family:'DM Sans',sans-serif;}
+
+.avail-status{display:none;padding:9px 13px;border-radius:6px;font-size:12.5px;font-weight:500;margin-top:6px;align-items:center;gap:8px;}
+.avail-status.show{display:flex;}
+.avail-status.ok{background:var(--green-bg);color:var(--green-txt);}
+.avail-status.taken{background:var(--red-bg);color:var(--red-txt);}
+.avail-status.checking{background:#f1f5f9;color:var(--muted);}
+
+.pay-methods{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.pm{flex:1;min-width:90px;border:1.5px solid var(--border);border-radius:8px;padding:13px 10px;text-align:center;cursor:pointer;transition:all .18s;font-size:12.5px;color:var(--muted);user-select:none;}
+.pm:hover{border-color:var(--navy);color:var(--navy);}
+.pm.sel{border-color:var(--gold);background:rgba(201,168,76,.07);color:var(--navy);font-weight:600;}
+.pm-icon{font-size:22px;margin-bottom:5px;}
+
+.btn-submit{width:100%;background:var(--gold);color:var(--navy);border:none;padding:15px;border-radius:8px;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;cursor:pointer;transition:all .18s;letter-spacing:.4px;margin-top:4px;}
+.btn-submit:hover:not(:disabled){background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.35);}
+.btn-submit:disabled{background:#ddd;color:#aaa;cursor:not-allowed;transform:none;box-shadow:none;}
+.secure-note{text-align:center;font-size:11px;color:var(--muted);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:5px;}
+
+.err-banner{background:var(--red-bg);color:var(--red-txt);padding:12px 15px;border-radius:7px;font-size:13px;border-left:4px solid var(--red);margin-top:14px;display:none;line-height:1.5;}
+.err-banner.show{display:block;}
+
+.sum-card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;position:sticky;top:80px;}
+.sum-head{background:var(--navy);color:var(--white);padding:20px 22px;}
+.sum-head h3{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:3px;}
+.sum-head p{font-size:12px;opacity:.6;}
+.sum-body{padding:18px 22px;}
+.sum-row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #f5f5f5;}
+.sum-row:last-child{border-bottom:none;}
+.sum-row .sl{color:var(--muted);}
+.sum-row .sv{font-weight:500;}
+.sum-total{background:var(--light);border-radius:8px;padding:14px 16px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;}
+.sum-total .stl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;}
+.sum-total .stp{font-family:'Playfair Display',serif;font-size:23px;color:var(--navy);font-weight:700;}
+.sum-perks{margin-top:20px;padding-top:16px;border-top:1px solid #f0f0f0;}
+.sum-perks li{font-size:11.5px;color:var(--muted);list-style:none;padding:3px 0;display:flex;align-items:center;gap:7px;}
+.sum-perks li::before{content:'✓';color:var(--green);font-weight:700;}
+
+.auth-gate{display:none;max-width:480px;margin:64px auto 80px;padding:0 20px;text-align:center;animation:fadeUp .35s ease;}
+.auth-gate.show{display:block;}
+.ag-card{background:var(--white);border-radius:16px;padding:52px 44px;box-shadow:var(--shadow-lg);}
+.ag-icon{font-size:56px;margin-bottom:20px;}
+.auth-gate h2{font-family:'Playfair Display',serif;font-size:26px;color:var(--navy);margin-bottom:12px;}
+.auth-gate p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:28px;}
+.btn-login{display:inline-block;background:var(--gold);color:var(--navy);padding:14px 36px;border-radius:8px;text-decoration:none;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;transition:all .18s;letter-spacing:.4px;}
+.btn-login:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3);}
+
+.bookings-grid{display:flex;flex-direction:column;gap:14px;}
+.bcard{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;border-left:4px solid transparent;transition:box-shadow .2s,transform .2s;animation:fadeUp .3s ease both;}
+.bcard:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+.bcard.s-confirmed{border-left-color:var(--green);}
+.bcard.s-pending{border-left-color:var(--amber);}
+.bcard.s-cancelled{border-left-color:var(--red);opacity:.75;}
+.bcard.s-checked_in{border-left-color:var(--blue);}
+.bcard.s-checked_out{border-left-color:#9ca3af;opacity:.75;}
+.bcard-inner{padding:20px 22px;display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:start;}
+.bcard-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--light);flex-shrink:0;}
+.bcard.s-confirmed .bcard-icon{background:var(--green-bg);}
+.bcard.s-pending .bcard-icon{background:var(--amber-bg);}
+.bcard.s-cancelled .bcard-icon{background:var(--red-bg);}
+.bcard.s-checked_in .bcard-icon{background:var(--blue-bg);}
+.bcard-main{}
+.bcard-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.bcard-id{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--navy);background:rgba(10,61,98,.06);padding:3px 7px;border-radius:4px;}
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;}
+.sd{width:5px;height:5px;border-radius:50%;background:currentColor;}
+.status-badge.s-confirmed{background:var(--green-bg);color:var(--green-txt);}
+.status-badge.s-pending{background:var(--amber-bg);color:var(--amber-txt);}
+.status-badge.s-cancelled{background:var(--red-bg);color:var(--red-txt);}
+.status-badge.s-checked_in{background:var(--blue-bg);color:var(--blue-txt);}
+.status-badge.s-checked_out{background:#f3f4f6;color:var(--muted);}
+.bcard-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--navy);margin-bottom:6px;}
+.bcard-meta{display:flex;gap:16px;flex-wrap:wrap;}
+.bmi{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted);}
+.bmi strong{color:var(--text);}
+.countdown{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;margin-top:8px;padding:4px 9px;border-radius:5px;}
+.cd-future{background:var(--green-bg);color:var(--green-txt);}
+.cd-today{background:rgba(201,168,76,.15);color:#7a5a00;}
+.cd-active{background:var(--blue-bg);color:var(--blue-txt);}
+.cd-past{background:#f3f4f6;color:var(--muted);}
+.cd-pending{background:var(--amber-bg);color:var(--amber-txt);}
+.bcard-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;min-width:120px;}
+.bcard-amount{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);font-weight:700;text-align:right;line-height:1.2;}
+.bcard-amount small{font-size:10px;font-weight:400;color:var(--muted);font-family:'DM Sans',sans-serif;display:block;}
+.bcard-actions{display:flex;flex-direction:column;gap:6px;width:100%;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 14px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;border:none;transition:all .18s;text-decoration:none;white-space:nowrap;}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-1px);}
+.btn-navy{background:var(--navy);color:var(--white);}
+.btn-navy:hover{background:var(--navy2);}
+.btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border);}
+.btn-ghost:hover{border-color:var(--navy);color:var(--navy);}
+.btn-red{background:transparent;color:var(--red-txt);border:1.5px solid rgba(231,76,60,.3);}
+.btn-red:hover{background:var(--red-bg);border-color:var(--red);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
+
+.empty{text-align:center;padding:60px 40px;background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);}
+.empty-icon{font-size:52px;margin-bottom:18px;}
+.empty h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin-bottom:8px;}
+.empty p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:22px;}
+
+.skel-card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);padding:20px 22px;display:flex;gap:16px;align-items:flex-start;margin-bottom:14px;}
+.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:5px;}
+@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+
+.filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.filter-btn{padding:7px 16px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .18s;}
+.filter-btn:hover{border-color:var(--navy);color:var(--navy);}
+.filter-btn.active{background:var(--navy);border-color:var(--navy);color:var(--white);}
+.fc{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px;vertical-align:middle;background:rgba(255,255,255,.25);}
+.filter-btn:not(.active) .fc{background:var(--border);color:var(--muted);}
+
+.group-section{margin-bottom:28px;}
+.group-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+.group-header h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);font-weight:600;}
+.group-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.group-dot.active{background:var(--green);box-shadow:0 0 0 3px var(--green-bg);}
+.group-dot.past{background:#9ca3af;}
+.group-count{font-size:12px;color:var(--muted);background:var(--border);padding:2px 8px;border-radius:10px;margin-left:auto;}
+.past-toggle{display:flex;align-items:center;gap:8px;background:none;border:1.5px solid var(--border);border-radius:8px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);cursor:pointer;transition:all .2s;margin-bottom:14px;width:100%;}
+.past-toggle:hover{border-color:var(--navy);color:var(--navy);}
+.past-toggle .pt-arrow{transition:transform .25s;font-size:11px;}
+.past-toggle.open .pt-arrow{transform:rotate(180deg);}
+.past-group{display:none;}
+.past-group.open{display:block;}
+
+.success{display:none;max-width:520px;margin:64px auto 80px;padding:0 20px;text-align:center;animation:fadeUp .45s ease;}
+.success.show{display:block;}
+.suc-card{background:var(--white);border-radius:16px;padding:52px 44px;box-shadow:var(--shadow-lg);}
+.suc-icon{font-size:64px;margin-bottom:22px;}
+.success h2{font-family:'Playfair Display',serif;font-size:28px;color:var(--navy);margin-bottom:12px;}
+.success .sub{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:6px;}
+.bid-badge{display:inline-block;background:var(--navy);color:var(--gold);font-family:'Playfair Display',serif;font-size:18px;padding:11px 28px;border-radius:8px;margin:16px 0;letter-spacing:2px;}
+.countdown-note{margin-top:18px;font-size:14px;color:var(--muted);line-height:1.6;}
+.countdown-note strong{color:var(--navy);}
+.poll-wrap{margin-top:18px;}
+.poll-bar-bg{height:3px;background:#eee;border-radius:2px;overflow:hidden;}
+.poll-bar{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .5s ease;}
+.suc-actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(8,48,77,.6);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--white);border-radius:16px;padding:36px 32px;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.2);animation:fadeUp .25s ease;}
+.modal h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin-bottom:10px;}
+.modal p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;}
+
+.toast{position:fixed;bottom:24px;right:24px;z-index:600;background:var(--navy);color:var(--white);padding:13px 20px;border-radius:10px;font-size:13.5px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;pointer-events:auto;}
+.toast.success{background:var(--green);}
+.toast.error{background:var(--red);}
+
+.loader{display:none;position:fixed;inset:0;background:rgba(8,48,77,.7);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:16px;backdrop-filter:blur(3px);}
+.loader.show{display:flex;}
+.spin{width:46px;height:46px;border:4px solid rgba(255,255,255,.18);border-top-color:var(--gold);border-radius:50%;animation:spin .75s linear infinite;}
+.loader p{color:var(--white);font-size:15px;}
+
+footer{background:var(--navy2);color:rgba(255,255,255,.55);text-align:center;padding:24px;font-size:12.5px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:960px){.layout{grid-template-columns:1fr;}.sum-card{position:static;}}
+@media(max-width:768px){
+  header{padding:0 16px;}.hero{padding:32px 16px 28px;}
+  .layout,.page-wrap{padding:0 16px;margin:24px auto 60px;}
+  .frow{grid-template-columns:1fr;}
+  .steps{flex-wrap:wrap;padding:0 16px;}.step{padding:12px 14px;border-right:none;}
+  nav a:not(.nav-book){display:none;}
+  .hero-stats{display:none;}
+  .bcard-inner{grid-template-columns:44px 1fr;}
+  .bcard-right{flex-direction:row;align-items:center;flex-wrap:wrap;min-width:auto;grid-column:1/-1;}
+  .bcard-actions{flex-direction:row;width:auto;}
+}
+</style>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PrimeWave Hotel">
+<meta property="og:title" content="Book a Room or Table | PrimeWave Hotel">
+<meta property="og:description" content="Reserve a room or dining table at PrimeWave Hotel in Nairobi. See live availability and pay securely online.">
+<meta name="theme-color" content="#0a3d62">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="logo">PRIME<em>WAVE</em></a>
+  <nav class="site-nav" id="siteNav" aria-label="Main">
+    <a href="/">Home</a>
+    <a href="/rooms.html">Rooms</a>
+    <a href="/about.html">About</a>
+    <a href="/services.html">Services</a>
+    <a href="/news.html">News</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/book.html" class="nav-book">Book Now</a>
+    <a href="/login.html" class="nav-acct" id="navAcct"><span class="av"></span><span class="lb">Sign in</span></a>
+  </nav>
+  <button class="ham" id="siteHam" aria-label="Menu" aria-expanded="false" aria-controls="siteNav">☰</button>
+</header>
+
+<!-- HERO (shown when logged in) -->
+<div class="hero" id="heroSection" style="display:none">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1 id="heroTitle">Welcome back!</h1>
+      <p id="heroSub">Manage your bookings or reserve a new room or table.</p>
+    </div>
+    <div class="hero-stats" id="heroStats">
+      <div class="stat-pill"><div class="sn" id="statTotal">0</div><div class="sl">Bookings</div></div>
+      <div class="stat-pill"><div class="sn" id="statUpcoming">0</div><div class="sl">Upcoming</div></div>
+      <div class="stat-pill"><div class="sn" id="statActive">0</div><div class="sl">Active</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB BAR (shown when logged in) -->
+<div class="tab-bar" id="tabBar" style="display:none">
+  <button class="tab-btn active" id="tab-bookings" onclick="switchTab('bookings')">
+    📋 My Bookings <span class="tab-badge" id="tabBadge">0</span>
+  </button>
+  <button class="tab-btn" id="tab-new" onclick="switchTab('new')">
+    ＋ New Booking
+  </button>
+</div>
+
+<!-- AUTH GATE -->
+<div class="auth-gate" id="authGate">
+  <div class="ag-card">
+    <div class="ag-icon">🔐</div>
+    <h2>Sign In to Continue</h2>
+    <p>Access your bookings, view receipts, and make new reservations — all in one place.</p>
+    <a id="loginLink" href="#" class="btn-login">Sign In / Create Account →</a>
+  </div>
+</div>
+
+<!-- TAB 1: MY BOOKINGS -->
+<div class="tab-panel active" id="panel-bookings">
+  <div class="page-wrap">
+
+    <div class="filters" id="filtersBar">
+      <button class="filter-btn active" onclick="applyFilter('all',this)">All <span class="fc" id="fc-all">0</span></button>
+      <button class="filter-btn" onclick="applyFilter('active',this)">Active <span class="fc" id="fc-active">0</span></button>
+      <button class="filter-btn" onclick="applyFilter('upcoming',this)">Upcoming <span class="fc" id="fc-upcoming">0</span></button>
+      <button class="filter-btn" onclick="applyFilter('confirmed',this)">Confirmed <span class="fc" id="fc-confirmed">0</span></button>
+      <button class="filter-btn" onclick="applyFilter('pending',this)">Pending <span class="fc" id="fc-pending">0</span></button>
+      <button class="filter-btn" onclick="applyFilter('cancelled',this)">Cancelled <span class="fc" id="fc-cancelled">0</span></button>
+    </div>
+
+    <div id="skeletonLoader">
+      <div class="skel-card"><div style="width:48px;height:48px;border-radius:10px;flex-shrink:0" class="skeleton"></div><div style="flex:1"><div class="skeleton" style="height:13px;width:60%;margin-bottom:10px"></div><div class="skeleton" style="height:13px;width:80%;margin-bottom:10px"></div><div class="skeleton" style="height:11px;width:45%"></div></div></div>
+      <div class="skel-card"><div style="width:48px;height:48px;border-radius:10px;flex-shrink:0" class="skeleton"></div><div style="flex:1"><div class="skeleton" style="height:13px;width:55%;margin-bottom:10px"></div><div class="skeleton" style="height:13px;width:75%;margin-bottom:10px"></div><div class="skeleton" style="height:11px;width:40%"></div></div></div>
+    </div>
+
+    <div class="bookings-grid" id="bookingsList" style="display:none"></div>
+
+  </div>
+</div>
+
+<!-- TAB 2: NEW BOOKING -->
+<div class="tab-panel" id="panel-new">
+
+  <div class="steps" id="stepsBar">
+    <div class="step active" id="si1"><div class="step-n">1</div><span>Your Details</span></div>
+    <div class="step"        id="si2"><div class="step-n">2</div><span>Room &amp; Dates</span></div>
+    <div class="step"        id="si3"><div class="step-n">3</div><span>Payment</span></div>
+    <div class="step"        id="si4"><div class="step-n">4</div><span>Confirmation</span></div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <form id="bookingForm" novalidate>
+
+        <div class="fcard">
+          <div class="fsection">
+            <div class="stitle"><div class="stitle-num">1</div> Guest Details</div>
+            <div class="guest-pill" id="guestPill">
+              <div class="gp-av" id="gpAv">G</div>
+              <div class="gp-info"><p id="gpName">Guest</p><span id="gpEmail">—</span></div>
+              <button type="button" class="gp-switch" onclick="doLogout()">Switch account</button>
+            </div>
+            <div class="frow">
+              <div class="fg"><label>Full Name <span class="req">*</span></label><input type="text" id="name" placeholder="James Mwangi" autocomplete="name"><span class="ferr" id="err-name">Please enter your full name.</span></div>
+              <div class="fg"><label>Phone Number <span class="req">*</span></label><input type="tel" id="phone" placeholder="+254 7XX XXX XXX" autocomplete="tel"><span class="ferr" id="err-phone">Please enter a valid phone number.</span></div>
+            </div>
+            <div class="frow s1">
+              <div class="fg"><label>Email Address <span class="req">*</span></label><input type="email" id="email" placeholder="you@example.com" autocomplete="email"><span class="ferr" id="err-email">Please enter a valid email address.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fcard">
+          <div class="fsection">
+            <div class="stitle"><div class="stitle-num">2</div> Room &amp; Dates</div>
+            <div class="room-prev" id="roomPrev"><span style="color:var(--muted);font-size:13px">Select a room or table below.</span></div>
+            <div class="frow">
+              <div class="fg"><label>Reservation Type <span class="req">*</span></label><select id="type" onchange="onTypeChange()"><option value="room">Room Booking</option><option value="table">Table Reservation</option></select></div>
+              <div class="fg"><label id="roomSelLabel">Select Room <span class="req">*</span></label><select id="roomSel" onchange="onRoomChange()"><option value="">Loading…</option></select><span class="ferr" id="err-room">Please select a room or table.</span></div>
+            </div>
+
+            <div id="roomDates">
+              <div class="frow">
+                <div class="fg"><label>Check-in Date <span class="req">*</span></label><input type="date" id="checkin"><span class="ferr" id="err-checkin">Please select a check-in date.</span></div>
+                <div class="fg"><label>Check-out Date <span class="req">*</span></label><input type="date" id="checkout"><span class="ferr" id="err-checkout">Check-out must be after check-in.</span></div>
+              </div>
+              <div id="roomCal" style="display:none"></div>
+            </div>
+
+            <div id="tableDates" style="display:none">
+              <div class="busy-note" id="tableBusy" role="status"></div>
+              <div class="frow">
+                <div class="fg"><label>Date <span class="req">*</span></label><input type="date" id="tableDate"><span class="ferr" id="err-tableDate">Please select a date.</span></div>
+                <div class="fg"><label>Start Time <span class="req">*</span></label><input type="time" id="startTime" value="12:00"><span class="ferr" id="err-startTime">Please select a start time.</span></div>
+              </div>
+              <div class="frow">
+                <div class="fg"><label>Duration (hours) <span class="req">*</span></label><select id="duration"><option value="1">1 hour</option><option value="2" selected>2 hours</option><option value="3">3 hours</option><option value="4">4 hours</option><option value="5">5 hours</option><option value="6">6 hours</option><option value="8">8 hours</option></select><span class="time-hint" id="tableTimeHint">Check-out calculated automatically</span></div>
+                <div class="fg"><label>Guests <span class="req">*</span></label><input type="number" id="guestsTable" value="2" min="1" max="20"></div>
+              </div>
+            </div>
+
+            <div class="avail-status" id="availStatus"></div>
+
+            <div class="frow" id="roomGuestsRow" style="margin-top:14px">
+              <div class="fg"><label>Number of Guests <span class="req">*</span></label><input type="number" id="guests" value="1" min="1" max="10"></div>
+              <div class="fg"><label>Special Requests <span class="opt">(optional)</span></label><input type="text" id="notes" placeholder="Extra pillows, dietary needs…"></div>
+            </div>
+            <div id="tableNotesRow" style="display:none;margin-top:14px">
+              <div class="fg"><label>Special Requests <span class="opt">(optional)</span></label><input type="text" id="tableNotes" placeholder="Occasion, seating preferences…"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fcard">
+          <div class="fsection">
+            <div class="stitle"><div class="stitle-num">3</div> Payment Method</div>
+            <div class="pay-methods">
+              <div class="pm sel" onclick="selPay(this,'M-Pesa')"><div class="pm-icon">📱</div>M-Pesa</div>
+              <div class="pm" onclick="selPay(this,'Card')"><div class="pm-icon">💳</div>Card</div>
+              <div class="pm" onclick="selPay(this,'Bank Transfer')"><div class="pm-icon">🏦</div>Bank Transfer</div>
+            </div>
+            <p style="font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:18px">You will be redirected to <strong>PesaPal</strong> to complete payment. Booking is only saved once payment is confirmed.</p>
+            <div class="err-banner" id="errBanner"></div>
+            <button type="submit" class="btn-submit" id="submitBtn">Confirm &amp; Proceed to Payment →</button>
+            <p class="secure-note">🔒 Powered by PesaPal · Booking saved only after payment</p>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div>
+      <div class="sum-card">
+        <div class="sum-head"><h3>Booking Summary</h3><p>Review before you pay</p></div>
+        <div class="sum-body">
+          <div class="sum-row"><span class="sl">Room / Table</span><span class="sv" id="s-room">—</span></div>
+          <div class="sum-row"><span class="sl">Type</span><span class="sv" id="s-type">—</span></div>
+          <div class="sum-row"><span class="sl">Check-in</span><span class="sv" id="s-checkin">—</span></div>
+          <div class="sum-row"><span class="sl">Check-out</span><span class="sv" id="s-checkout">—</span></div>
+          <div class="sum-row"><span class="sl">Duration</span><span class="sv" id="s-nights">—</span></div>
+          <div class="sum-row"><span class="sl">Guests</span><span class="sv" id="s-guests">—</span></div>
+          <div class="sum-row"><span class="sl">Rate</span><span class="sv" id="s-rate">—</span></div>
+          <div class="sum-row"><span class="sl">Subtotal</span><span class="sv" id="s-sub">—</span></div>
+          <div class="sum-row"><span class="sl">VAT (16%)</span><span class="sv" id="s-tax">—</span></div>
+          <div class="sum-total"><span class="stl">Total</span><span class="stp" id="s-total">KES —</span></div>
+          <ul class="sum-perks">
+            <li>Booking confirmed only after payment</li>
+            <li>Receipt emailed instantly</li>
+            <li>Secure M-Pesa / Card via PesaPal</li>
+            <li>All payments are non-refundable</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS / POLLING SCREEN -->
+<div class="success" id="successScreen">
+  <div class="suc-card">
+    <div class="suc-icon" id="sucIcon">⏳</div>
+    <h2 id="sucTitle">Preparing Payment…</h2>
+    <p class="sub" id="sucSub">Please wait while we connect to PesaPal.</p>
+    <div class="bid-badge" id="sucBid" style="display:none"></div>
+    <div class="countdown-note" id="countdownNote"></div>
+    <div class="poll-wrap" id="pollWrap" style="display:none"><div class="poll-bar-bg"><div class="poll-bar" id="pollBar"></div></div></div>
+    <div class="suc-actions" id="sucActions" style="display:none">
+      <button class="btn btn-gold" onclick="switchTab('bookings');el('successScreen').classList.remove('show');">View My Bookings</button>
+      <a href="/" class="btn btn-ghost">Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<!-- CANCEL MODAL -->
+<div class="modal-overlay" id="cancelModal">
+  <div class="modal">
+    <h3>Cancel Booking?</h3>
+    <p>Are you sure you want to cancel booking <strong id="cancelBid"></strong>? Your payment has not been processed yet — this booking will be removed.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Keep It</button>
+      <button class="btn btn-red" id="confirmCancelBtn" onclick="confirmCancel()">Yes, Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="loader" id="loader"><div class="spin"></div><p id="loaderTxt">Processing…</p></div>
+
+<footer>© 2026 PrimeWave Hotel · Nairobi, Kenya · All Rights Reserved<div class="social" style="justify-content:center" data-social></div></footer>
+<script>
+'use strict';
+
+// ════════════════════════════════════════════════════
+//  CONFIG — Node/Express backend (replaces GAS_URL)
+// ════════════════════════════════════════════════════
+const API_BASE  = '/api';
+const HOME_URL  = '/';
+const BOOK_URL  = window.location.href.split('?')[0].split('#')[0];
+const LOGIN_URL = '/login.html?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);   // keeps ?room=…&checkin=… through sign-in
+const RECEIPT_BASE = '/receipt.html?booking_id=';
+
+// ════════════════════════════════════════════════════
+//  SESSION — standard JWT (payload at segment [1], `exp` in seconds)
+//  matching server/middleware/auth.js and routes/auth.js's login().
+// ════════════════════════════════════════════════════
+let TOKEN = null, USER = null;
+
+function decodeJwtPayload(token) {
+  const b64url = token.split('.')[1];
+  const b64 = b64url.replace(/-/g,'+').replace(/_/g,'/').padEnd(b64url.length + (4 - b64url.length % 4) % 4, '=');
+  return JSON.parse(atob(b64));
+}
+
+function initSession() {
+  const hash = window.location.hash;
+  if (hash && hash.includes('token=')) {
+    try {
+      const raw = hash.split('token=')[1].split('&')[0];
+      TOKEN = decodeURIComponent(raw);
+      const payload = decodeJwtPayload(TOKEN);
+      USER = { user_id: payload.user_id, name: payload.name, email: payload.email, role: payload.role };
+      sessionStorage.setItem('pw_token', TOKEN);
+      sessionStorage.setItem('pw_user', JSON.stringify(USER));
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    } catch(e) { TOKEN = null; USER = null; }
+  }
+  if (!TOKEN) {
+    TOKEN = sessionStorage.getItem('pw_token');
+    USER  = JSON.parse(sessionStorage.getItem('pw_user') || 'null');
+  }
+  if (TOKEN) {
+    try {
+      const payload = decodeJwtPayload(TOKEN);
+      if (payload.exp && payload.exp * 1000 < Date.now()) { sessionStorage.clear(); TOKEN = null; USER = null; }
+    } catch(e) { sessionStorage.clear(); TOKEN = null; USER = null; }
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  API — one helper per verb, path-based instead of action-based
+// ════════════════════════════════════════════════════
+async function apiPost(path, data) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+  const res  = await fetch(API_BASE + path, { method:'POST', headers, body: JSON.stringify(data || {}) });
+  const text = await res.text();
+  try {
+    const json = JSON.parse(text);
+    if (res.status === 401) {
+      sessionStorage.clear(); TOKEN = null; USER = null; window.location.href = LOGIN_URL; return null;
+    }
+    return json;
+  } catch(e) { throw new Error('Bad response: ' + text.slice(0,120)); }
+}
+
+async function apiGet(path, params) {
+  const headers = {};
+  if (TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+  const qs = params ? '?' + new URLSearchParams(params) : '';
+  const res = await fetch(API_BASE + path + qs, { headers });
+  const text = await res.text();
+  try {
+    const json = JSON.parse(text);
+    if (res.status === 401) {
+      sessionStorage.clear(); TOKEN = null; USER = null; window.location.href = LOGIN_URL; return null;
+    }
+    return json;
+  } catch(e) { throw new Error('Bad response'); }
+}
+
+// ════════════════════════════════════════════════════
+//  BOOTSTRAP
+// ════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', function() {
+  initSession();
+  setDateDefaults();
+
+  const urlParams  = new URLSearchParams(window.location.search);
+  const isReturn   = urlParams.get('return') === '1';
+  const sessionId  = urlParams.get('sid');
+  const trackingId = urlParams.get('OrderTrackingId') || urlParams.get('tracking_id') || '';
+
+  // PesaPal return flow — polls POST /api/payments/session-status
+  if (isReturn && sessionId) {
+    history.replaceState(null, '', window.location.pathname);
+    hideAll();
+    el('successScreen').classList.add('show');
+    pollPaymentStatus(sessionId, trackingId);
+    return;
+  }
+
+  if (!TOKEN || !USER) { showAuthGate(); return; }
+
+  showLoggedIn();
+  loadBookings();
+  _pre = readDeepLink();                                  // ?type=room&room_id=…&checkin=…&checkout=…  (rooms page, "Book again")
+  if (_pre) switchTab('new');                             // the page opens on "My bookings" — a booking link must land on the form
+  if (_pre && _pre.type === 'table') { el('type').value = 'table'; onTypeChange(); } else { loadOptions(); }
+  bindFormSubmit();
+});
+
+// ════════════════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════════════════
+function showAuthGate() {
+  el('authGate').classList.add('show');
+  el('loginLink').href = LOGIN_URL;
+}
+
+function showLoggedIn() {
+  el('authGate').classList.remove('show');
+  el('heroSection').style.display = '';
+  el('tabBar').style.display = 'flex';
+  if (window.PWnav) PWnav.refresh();
+  el('heroTitle').textContent = 'Welcome back, ' + (USER.name ? USER.name.split(' ')[0] : 'there') + '!';
+  prefillGuest();
+}
+
+function doLogout() {
+  sessionStorage.clear(); TOKEN = null; USER = null;
+  window.location.href = LOGIN_URL;
+}
+
+// ════════════════════════════════════════════════════
+//  TAB SWITCHING
+// ════════════════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  el('tab-'+tab).classList.add('active');
+  el('panel-'+tab).classList.add('active');
+  el('successScreen').classList.remove('show');
+}
+
+// ════════════════════════════════════════════════════
+//  MY BOOKINGS — GET /api/bookings/mine (was action:getMyBookings)
+// ════════════════════════════════════════════════════
+let allBookings = [], activeFilter = 'all', cancelTarget = null;
+
+async function loadBookings() {
+  try {
+    const res = await apiGet('/bookings/mine');
+    if (!res) return;
+    if (res.status !== 'success') { showBookingsError(res.message || 'Could not load bookings.'); return; }
+
+    allBookings = (res.data || []).sort(function(a,b){ return new Date(b.created_at) - new Date(a.created_at); });
+    updateStats();
+    updateCounts();
+    renderBookings();
+    el('skeletonLoader').style.display = 'none';
+    el('bookingsList').style.display   = '';
+
+    if (allBookings.length === 0) {
+      switchTab('new');
+    }
+  } catch(err) {
+    showBookingsError('Network error. Please refresh.');
+  }
+}
+
+function updateStats() {
+  var now = new Date();
+  var upcoming = allBookings.filter(function(b){ return (b.status==='confirmed'||b.status==='pending_payment') && new Date(b.checkin_date) > now; }).length;
+  var active   = allBookings.filter(function(b){ var ci=new Date(b.checkin_date),co=new Date(b.checkout_date); return b.status==='checked_in'||(b.status==='confirmed'&&ci<=now&&co>=now); }).length;
+  setText('statTotal', allBookings.length);
+  setText('statUpcoming', upcoming);
+  setText('statActive', active);
+  setText('tabBadge', allBookings.length);
+  el('heroSub').textContent = allBookings.length
+    ? 'You have ' + allBookings.length + ' booking' + (allBookings.length!==1?'s':'') + '. ' + (upcoming ? upcoming + ' upcoming.' : '')
+    : 'No bookings yet. Start by making a new reservation below.';
+}
+
+function isActiveBooking(b, now) {
+  if (!now) now = new Date();
+  var ci = new Date(b.checkin_date), co = new Date(b.checkout_date);
+  return b.status === 'checked_in' ||
+    (b.status === 'confirmed' && ci <= now && co >= now);
+}
+function isUpcomingBooking(b, now) {
+  if (!now) now = new Date();
+  return (b.status === 'confirmed' || b.status === 'pending_payment') &&
+         new Date(b.checkin_date) > now;
+}
+function isPastBooking(b, now) {
+  if (!now) now = new Date();
+  return b.status === 'checked_out' ||
+    b.status === 'cancelled' ||
+    b.status === 'payment_failed' ||
+    ((b.status === 'confirmed' || b.status === 'checked_in') && new Date(b.checkout_date) < now);
+}
+
+function updateCounts() {
+  var now = new Date();
+  setText('fc-all',       allBookings.length);
+  setText('fc-active',    allBookings.filter(function(b){ return isActiveBooking(b,now); }).length);
+  setText('fc-upcoming',  allBookings.filter(function(b){ return isUpcomingBooking(b,now); }).length);
+  setText('fc-confirmed', allBookings.filter(function(b){ return b.status==='confirmed'; }).length);
+  setText('fc-pending',   allBookings.filter(function(b){ return b.status==='pending_payment'; }).length);
+  setText('fc-cancelled', allBookings.filter(function(b){ return b.status==='cancelled'; }).length);
+}
+
+function applyFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderBookings();
+}
+
+function renderBookings() {
+  var list = el('bookingsList');
+  var now  = new Date();
+
+  var filtered = allBookings.filter(function(b) {
+    if (activeFilter === 'active')    return isActiveBooking(b, now);
+    if (activeFilter === 'upcoming')  return isUpcomingBooking(b, now);
+    if (activeFilter === 'confirmed') return b.status === 'confirmed';
+    if (activeFilter === 'pending')   return b.status === 'pending_payment';
+    if (activeFilter === 'cancelled') return b.status === 'cancelled';
+    return true;
+  });
+
+  if (!filtered.length) {
+    var msgs = {
+      all:       {icon:'📋', title:'No bookings yet',       body:'Ready to plan your stay?'},
+      active:    {icon:'🟢', title:'No active bookings',    body:'No bookings are currently active.'},
+      upcoming:  {icon:'📅', title:'No upcoming bookings',  body:'No upcoming reservations found.'},
+      confirmed: {icon:'✅', title:'No confirmed bookings', body:''},
+      pending:   {icon:'⏳', title:'No pending bookings',   body:''},
+      cancelled: {icon:'❌', title:'No cancelled bookings', body:''},
+    };
+    var m = msgs[activeFilter] || msgs.all;
+    list.innerHTML = '<div class="empty"><div class="empty-icon">'+m.icon+'</div><h3>'+m.title+'</h3><p>'+m.body+'</p>'+
+      '<button class="btn btn-gold" onclick="switchTab(\'new\')" style="margin:0 auto">+ Make a New Booking</button></div>';
+    return;
+  }
+
+  if (activeFilter === 'all') { renderGrouped(filtered, now, list); return; }
+  list.innerHTML = filtered.map(function(b,i){ return renderCard(b,i); }).join('');
+}
+
+function renderGrouped(bookings, now, list) {
+  var liveGroup = bookings.filter(function(b){ return !isPastBooking(b,now); });
+  var pastGroup = bookings.filter(function(b){ return isPastBooking(b,now); });
+  var html = '';
+
+  if (liveGroup.length) {
+    html += '<div class="group-section">';
+    html += '<div class="group-header"><div class="group-dot active"></div><h3>Active &amp; Upcoming</h3><span class="group-count">'+liveGroup.length+'</span></div>';
+    html += '<div class="bookings-grid">'+liveGroup.map(function(b,i){ return renderCard(b,i); }).join('')+'</div></div>';
+  } else {
+    html += '<div class="group-section">';
+    html += '<div class="group-header"><div class="group-dot active"></div><h3>Active &amp; Upcoming</h3><span class="group-count">0</span></div>';
+    html += '<div class="empty" style="padding:36px 24px"><div class="empty-icon">📅</div><h3 style="font-size:17px">No active or upcoming bookings</h3><p>Book a room or table to get started.</p><button class="btn btn-gold" onclick="switchTab(\'new\')" style="margin:12px auto 0">+ New Booking</button></div>';
+    html += '</div>';
+  }
+
+  if (pastGroup.length) {
+    html += '<div class="group-section">';
+    html += '<button class="past-toggle" id="pastToggle" onclick="togglePast()">'+
+              '<div class="group-dot past" style="flex-shrink:0"></div>'+
+              '<span style="font-weight:500;color:var(--text)">Past Bookings</span>'+
+              '<span style="font-size:12px;color:var(--muted);margin-left:4px">('+pastGroup.length+')</span>'+
+              '<span style="margin-left:auto;font-size:11px;color:var(--muted)">Show &nbsp;</span>'+
+              '<span class="pt-arrow">▼</span>'+
+            '</button>';
+    html += '<div class="past-group" id="pastGroup"><div class="bookings-grid">'+
+              pastGroup.map(function(b,i){ return renderCard(b, liveGroup.length + i); }).join('')+
+            '</div></div></div>';
+  }
+
+  list.innerHTML = html;
+}
+
+function togglePast() {
+  var btn = el('pastToggle'), group = el('pastGroup');
+  if (!btn || !group) return;
+  var isOpen = group.classList.contains('open');
+  group.classList.toggle('open');
+  btn.classList.toggle('open');
+  var showSpan = btn.querySelector('span:nth-child(4)');
+  if (showSpan) showSpan.textContent = isOpen ? 'Show \u00a0' : 'Hide \u00a0';
+}
+
+// NOTE: receipt link points to /receipt.html?booking_id=... — that page
+// hasn't been converted from Receipt.gs yet, so this link 404s until it is.
+function renderCard(b, i) {
+  var isTable  = b.type === 'table';
+  var sc       = statusClass(b.status);
+  var sl       = statusLabel(b.status);
+  var durVal   = Number(b.nights) || 1;
+  var durLabel = isTable ? durVal+'hr'+(durVal!==1?'s':'') : durVal+' night'+(durVal!==1?'s':'');
+  var ciLabel  = isTable ? fmtDateTime(b.checkin_date) : fmtDate(b.checkin_date);
+  var coLabel  = isTable ? fmtDateTime(b.checkout_date) : fmtDate(b.checkout_date);
+  var cd       = buildCountdown(b);
+  var isPaid   = b.payment_status==='paid'||b.status==='confirmed'||b.status==='checked_in'||b.status==='checked_out';
+  var canCancel= b.payment_status!=='paid' && b.status==='pending_payment';
+  var actions  = '';
+
+  if (isPaid)     actions += '<a href="'+RECEIPT_BASE+encodeURIComponent(b.booking_id)+'" target="_blank" class="btn btn-gold" style="font-size:11.5px;padding:7px 12px">📄 Receipt</a>';
+  if (canCancel)  actions += '<button class="btn btn-red" style="font-size:11.5px;padding:7px 12px" onclick="showCancelModal(\''+esc(b.booking_id)+'\')">✕ Cancel</button>';
+
+  return '<div class="bcard '+sc+'" style="animation-delay:'+(i*0.04)+'s">'+
+    '<div class="bcard-inner">'+
+      '<div class="bcard-icon">'+(isTable?'🍽️':'🏨')+'</div>'+
+      '<div class="bcard-main">'+
+        '<div class="bcard-top">'+
+          '<span class="bcard-id">'+esc(b.booking_id)+'</span>'+
+          '<span class="status-badge '+sc+'"><span class="sd"></span>'+sl+'</span>'+
+          '<span style="font-size:11.5px;color:var(--muted)">'+(isTable?'Table':'Room')+'</span>'+
+        '</div>'+
+        '<div class="bcard-title">'+esc(b.item_label||(isTable?'Table Reservation':'Room Booking'))+'</div>'+
+        '<div class="bcard-meta">'+
+          '<div class="bmi">📅 <strong>'+ciLabel+'</strong> → '+coLabel+'</div>'+
+          '<div class="bmi">⏱ '+durLabel+'</div>'+
+          '<div class="bmi">👥 '+b.num_guests+' guest'+(Number(b.num_guests)!==1?'s':'')+'</div>'+
+          (b.payment_method?'<div class="bmi">💳 '+esc(b.payment_method)+'</div>':'')+
+        '</div>'+
+        (cd?'<div>'+cd+'</div>':'')+
+      '</div>'+
+      '<div class="bcard-right">'+
+        '<div class="bcard-amount">KES '+Number(b.total_amount||0).toLocaleString('en-KE')+'<small>incl. VAT</small></div>'+
+        '<div class="bcard-actions">'+actions+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function buildCountdown(b) {
+  if (b.status==='cancelled'||b.status==='payment_failed'||b.status==='checked_out') return '';
+  if (b.status==='pending_payment') return '<div class="countdown cd-pending">⏳ Complete payment to confirm</div>';
+  var now=new Date(), ci=new Date(b.checkin_date), co=new Date(b.checkout_date);
+  if (now>=ci && now<=co) { var h=Math.round((co-now)/3600000); return '<div class="countdown cd-active">🟢 Active now · '+h+'h until checkout</div>'; }
+  if (now>co) return '<div class="countdown cd-past">✓ Completed '+fmtDate(b.checkout_date)+'</div>';
+  var diff=ci-now, days=Math.floor(diff/86400000), hours=Math.floor((diff%86400000)/3600000);
+  if (days===0&&hours===0) return '<div class="countdown cd-today">📅 Check-in today!</div>';
+  if (days===0) return '<div class="countdown cd-today">📅 Check-in in '+hours+'h</div>';
+  if (days<=7)  return '<div class="countdown cd-future">📅 Check-in in '+days+' day'+(days!==1?'s':'')+'</div>';
+  return '<div class="countdown cd-future">📅 '+fmtDate(b.checkin_date)+'</div>';
+}
+
+function statusClass(s){var m={confirmed:'s-confirmed',pending_payment:'s-pending',cancelled:'s-cancelled',checked_in:'s-checked_in',checked_out:'s-checked_out',payment_failed:'s-cancelled'};return m[s]||'s-pending';}
+function statusLabel(s){var m={confirmed:'Confirmed',pending_payment:'Pending Payment',cancelled:'Cancelled',checked_in:'Checked In',checked_out:'Checked Out',payment_failed:'Payment Failed'};return m[s]||cap(s||'pending');}
+
+function showBookingsError(msg) {
+  el('skeletonLoader').style.display = 'none';
+  el('bookingsList').style.display   = '';
+  el('bookingsList').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><h3>Couldn\'t load bookings</h3><p>'+esc(msg)+'</p><button class="btn btn-navy" onclick="loadBookings()" style="margin:0 auto">Try Again</button></div>';
+}
+
+// ════════════════════════════════════════════════════
+//  CANCEL — POST /api/bookings/:id/cancel (was action:cancelBooking)
+// ════════════════════════════════════════════════════
+function showCancelModal(id) {
+  cancelTarget = id; setText('cancelBid', id);
+  el('cancelModal').classList.add('show');
+}
+function closeModal() { cancelTarget = null; el('cancelModal').classList.remove('show'); }
+
+async function confirmCancel() {
+  if (!cancelTarget) return;
+  var btn = el('confirmCancelBtn');
+  btn.disabled = true; btn.textContent = 'Cancelling\u2026';
+  try {
+    var res = await apiPost('/bookings/' + encodeURIComponent(cancelTarget) + '/cancel');
+    closeModal();
+    if (res && res.status === 'success') {
+      var b = allBookings.find(function(x){return x.booking_id===cancelTarget;});
+      if (b) b.status = 'cancelled';
+      updateStats(); updateCounts(); renderBookings();
+      showToast('Booking cancelled.', 'success');
+    } else { showToast((res&&res.message)||'Could not cancel. Try again.', 'error'); }
+  } catch(err) { closeModal(); showToast('Network error. Try again.', 'error'); }
+  btn.disabled = false; btn.textContent = 'Yes, Cancel';
+}
+
+// ════════════════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════════════════
+var _tt = null;
+function showToast(msg, type) {
+  var t = el('toast'); t.textContent = msg;
+  t.className = 'toast ' + (type||''); t.classList.add('show');
+  clearTimeout(_tt); _tt = setTimeout(function(){t.classList.remove('show');}, 3500);
+}
+
+// ════════════════════════════════════════════════════
+//  BOOKING FORM
+// ════════════════════════════════════════════════════
+function prefillGuest() {
+  if (!USER) return;
+  el('gpAv').textContent    = (USER.name||'G')[0].toUpperCase();
+  el('gpName').textContent  = USER.name  || '';
+  el('gpEmail').textContent = USER.email || '';
+  if (USER.name)  el('name').value  = USER.name;
+  if (USER.email) el('email').value = USER.email;
+}
+
+function setDateDefaults() {
+  var today = new Date(Date.now() + 3*3600000).toISOString().slice(0,10);   // Nairobi date, not UTC
+  ['checkin','checkout','tableDate'].forEach(function(id){ var e=el(id); if(e)e.min=today; });
+
+  var ci=el('checkin'), co=el('checkout');
+  if(ci) ci.addEventListener('change',function(){
+    if(co){ co.min=ci.value; if(co.value&&co.value<=ci.value) co.value=''; }
+    updateSummary(); liveAvailability();
+  });
+  if(co) co.addEventListener('change',function(){ updateSummary(); liveAvailability(); });
+
+  var td=el('tableDate'), st=el('startTime'), du=el('duration');
+  if(td) td.addEventListener('change',function(){ enforceMinTime(); updateSummary(); liveAvailability(); updateTableHint(); loadTableBusy(); });
+  if(st) st.addEventListener('change',function(){ enforceMinTime(); updateSummary(); updateTableHint(); liveAvailability(); });
+  if(du) du.addEventListener('change',function(){ updateSummary(); updateTableHint(); liveAvailability(); });
+
+  var g=el('guests'), gt=el('guestsTable');
+  if(g)  g.addEventListener('change', updateSummary);
+  if(gt) gt.addEventListener('change', updateSummary);
+}
+
+function enforceMinTime() {
+  var td   = el('tableDate');
+  var st   = el('startTime');
+  var hint = el('tableTimeHint');
+  if (!td || !st) return;
+
+  var today   = new Date().toISOString().split('T')[0];
+  var isToday = td.value === today;
+
+  if (!isToday) {
+    st.min = '';
+    st.classList.remove('err');
+    if (hint && hint.dataset.warn) {
+      hint.style.color = '';
+      hint.textContent = 'Check-out calculated automatically';
+      delete hint.dataset.warn;
+    }
+    return;
+  }
+
+  var minTime = new Date(Date.now() + 15 * 60 * 1000);
+  var minHH   = String(minTime.getHours()).padStart(2, '0');
+  var minMM   = String(minTime.getMinutes()).padStart(2, '0');
+  var minStr  = minHH + ':' + minMM;
+
+  st.min = minStr;
+
+  if (!st.value) return;
+
+  var selParts = st.value.split(':').map(Number);
+  var selMs    = selParts[0] * 3600000 + selParts[1] * 60000;
+  var minMs    = minTime.getHours() * 3600000 + minTime.getMinutes() * 60000;
+
+  if (selMs < minMs) {
+    st.value = '';
+    st.classList.add('err');
+    if (hint) {
+      hint.textContent  = '\u26a0 Choose a future time \u2014 earliest available: ' + minStr;
+      hint.style.color  = 'var(--red)';
+      hint.dataset.warn = '1';
+    }
+    updateSummary();
+    clearAvail();
+  } else {
+    st.classList.remove('err');
+    if (hint && hint.dataset.warn) {
+      hint.style.color = '';
+      delete hint.dataset.warn;
+      updateTableHint();
+    }
+  }
+}
+
+function updateTableHint() {
+  var hint=el('tableTimeHint'), date=el('tableDate')?el('tableDate').value:'', start=el('startTime')?el('startTime').value:'', dur=parseInt((el('duration')?el('duration').value:'2')||'2');
+  if(!date||!start){if(hint)hint.textContent='Check-out calculated automatically';return;}
+  var parts=start.split(':').map(Number), endDt=new Date(date+'T'+start+':00');
+  endDt.setHours(endDt.getHours()+dur, endDt.getMinutes(), 0, 0);
+  if(hint) hint.textContent='Check-out at '+endDt.toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'})+' (same day)';
+}
+
+function onTypeChange() {
+  var type=el('type').value, isTab=type==='table';
+  el('roomDates').style.display     = isTab?'none':'';
+  el('tableDates').style.display    = isTab?'':'none';
+  el('roomGuestsRow').style.display = isTab?'none':'';
+  el('tableNotesRow').style.display = isTab?'':'none';
+  var lbl=el('roomSelLabel'); if(lbl) lbl.innerHTML=(isTab?'Select Table':'Select Room')+' <span class="req">*</span>';
+  clearAvail(); updateSummary(); loadOptions();
+}
+
+// ── LOAD OPTIONS — GET /api/rooms or /api/tables (was action:getRooms/getTables) ──
+async function loadOptions() {
+  var type=el('type').value, sel=el('roomSel');
+  sel.innerHTML='<option value="">Loading\u2026</option>';
+  try {
+    var items=[], data;
+    if(type==='room') {
+      data=await apiGet('/rooms');
+      items=(data.data||[]).map(function(r){return{id:r.id,price:r.price_per_night,subtype:r.room_type,number:r.room_number,img:r.image_url||'',desc:r.description||'',guests:r.max_guests||4,status:r.status,label:'Room '+r.room_number+' \u2014 '+r.room_type+' (KES '+Number(r.price_per_night).toLocaleString()+'/night)'};});
+    } else {
+      data=await apiGet('/tables');
+      items=(data.data||[]).map(function(t){return{id:t.id,price:t.price_per_hour||0,subtype:t.location||'Main Hall',number:t.table_number,img:'',desc:t.seats+' seats \u00b7 '+(t.location||'Main Hall'),guests:t.seats,status:t.status,label:'Table '+t.table_number+' \u2014 '+t.table_name+' ('+t.seats+' seats, KES '+Number(t.price_per_hour||0).toLocaleString()+'/hr)'};});
+    }
+    sel.innerHTML='<option value="">\u2014 Select a '+(type==='table'?'Table':'Room')+' \u2014</option>';
+    items.forEach(function(item){
+      var opt=document.createElement('option'); opt.value=item.id; opt.textContent=item.label;
+      if(item.status&&item.status!=='available'){opt.textContent+=' ['+item.status+']';opt.disabled=true;}
+      Object.assign(opt.dataset,item); sel.appendChild(opt);
+    });
+    applyPreselect();
+  } catch(err) { sel.innerHTML='<option value="">Could not load \u2014 please refresh</option>'; }
+}
+
+function onRoomChange() {
+  var sel=el('roomSel'),opt=sel.options[sel.selectedIndex],prev=el('roomPrev'),type=el('type').value;
+  if(!opt||!opt.value){prev.classList.remove('loaded');prev.innerHTML='<span style="color:var(--muted);font-size:13px">Select a room or table to see details.</span>';updateSummary();clearAvail();loadCalendar();loadTableBusy();return;}
+  var d=opt.dataset,imgSrc=d.img||'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300';
+  prev.classList.add('loaded');
+  prev.innerHTML=(type==='room'?'<img src="'+esc(imgSrc)+'" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300\'" style="width:78px;height:64px;object-fit:cover;border-radius:6px;flex-shrink:0">':'<span style="font-size:30px;flex-shrink:0">\uD83C\uDF7D\uFE0F</span>')+'<div class="rp-info"><h4>'+(type==='room'?'Room '+esc(d.number)+' \u2014 '+esc(d.subtype):esc(d.subtype)+' \u00b7 Table '+esc(d.number))+'</h4><p>'+esc((d.desc||'').slice(0,90))+((d.desc||'').length>90?'\u2026':'')+'</p><div class="rp-price">KES '+Number(d.price).toLocaleString()+'<span> / '+(type==='table'?'hr':'night')+'</span></div></div>';
+  if(type==='room'&&el('guests')) el('guests').max=d.guests||10;
+  if(type==='table'&&el('guestsTable')) el('guestsTable').max=d.guests||20;
+  updateSummary(); liveAvailability(); loadCalendar(); loadTableBusy();
+}
+
+// ── AVAILABILITY — GET /api/availability (was POST action:checkAvailability) ──
+var _availTimer=null;
+function liveAvailability() {
+  var type=el('type').value, itemId=el('roomSel').value;
+  if(!itemId){clearAvail();return;}
+  var checkin,checkout;
+  if(type==='table'){
+    var date=el('tableDate')?el('tableDate').value:'';
+    var start=el('startTime')?el('startTime').value:'';
+    var dur=parseInt((el('duration')?el('duration').value:'2')||'2');
+    if(!date||!start){clearAvail();return;}
+    checkin=date+'T'+start+':00';
+    var parts=start.split(':').map(Number), endDt=new Date(date+'T'+start+':00');
+    endDt.setHours(endDt.getHours()+dur, endDt.getMinutes(), 0, 0);
+    checkout=date+'T'+String(endDt.getHours()).padStart(2,'0')+':'+String(endDt.getMinutes()).padStart(2,'0')+':00';
+  } else {
+    checkin=el('checkin')?el('checkin').value:'';
+    checkout=el('checkout')?el('checkout').value:'';
+    if(!checkin||!checkout||checkout<=checkin){clearAvail();return;}
+  }
+  setAvail('checking','\u29d7 Checking availability\u2026');
+  clearTimeout(_availTimer);
+  _availTimer=setTimeout(async function(){
+    try {
+      var params={checkin:checkin,checkout:checkout,type:type};
+      if(type==='table') params.table_id=itemId; else params.room_id=itemId;
+      var r=await apiGet('/availability', params); if(!r)return;
+      if(r.available) setAvail('ok','\u2714 '+(r.message||'Available!'));
+      else setAvail('taken','\u2717 '+(r.message||'Not available.'));
+    } catch(e){clearAvail();}
+  },450);
+}
+function setAvail(cls,msg){var e=el('availStatus');e.className='avail-status show '+cls;e.textContent=msg;}
+function clearAvail(){var e=el('availStatus');e.className='avail-status';e.textContent='';}
+
+// ── AVAILABILITY CALENDAR + DEEP LINKS ──────────────────
+var _cal=null, _calSeq=0, _pre=null;
+
+function initCalendar(){
+  if(_cal||!window.PWCalendar||!el('roomCal')) return;
+  _cal=PWCalendar.mount(el('roomCal'),{onPick:function(a,b){
+    var ci=el('checkin'), co=el('checkout');
+    ci.value=a; ci.dispatchEvent(new Event('change'));      // existing handlers update the summary + live availability
+    co.value=b; co.dispatchEvent(new Event('change'));
+  }});
+  ['checkin','checkout'].forEach(function(id){
+    el(id).addEventListener('change',function(){ _cal.setValue(el('checkin').value, el('checkout').value); });
+  });
+}
+
+async function loadCalendar(){
+  initCalendar(); if(!_cal) return;
+  var box=el('roomCal'), id=el('roomSel').value, seq=++_calSeq;
+  if(el('type').value!=='room'||!id){ box.style.display='none'; _cal.setBusy([],false); return; }
+  box.style.display='';
+  try{
+    var r=await apiGet('/availability/calendar',{type:'room',room_id:id});
+    if(seq!==_calSeq||!r) return;                           // a newer selection superseded this one
+    _cal.setBusy(r.nights||[], r.closed);
+    _cal.setValue(el('checkin').value, el('checkout').value);
+  }catch(e){ /* the calendar is a convenience — the server still validates every booking */ }
+}
+
+function fmtTime(iso){ return new Date(iso).toLocaleTimeString('en-GB',{timeZone:'Africa/Nairobi',hour:'2-digit',minute:'2-digit'}); }
+async function loadTableBusy(){
+  var box=el('tableBusy'); if(!box) return;
+  var id=el('roomSel').value, date=el('tableDate')?el('tableDate').value:'';
+  box.className='busy-note';
+  if(el('type').value!=='table'||!id||!date) return;
+  try{
+    var r=await apiGet('/availability/calendar',{type:'table',table_id:id,from:date,days:1}); if(!r) return;
+    if(el('roomSel').value!==id||el('tableDate').value!==date) return;
+    if(r.closed){ box.textContent='This table is not open for booking.'; box.className='busy-note show'; }
+    else if((r.ranges||[]).length){
+      box.textContent='Already booked that day: '+r.ranges.map(function(x){return fmtTime(x.start)+'\u2013'+fmtTime(x.end);}).join(', ')+'. Please choose another time.';
+      box.className='busy-note show';
+    }
+  }catch(e){}
+}
+
+function readDeepLink(){
+  var q=new URLSearchParams(location.search), ymd=/^\d{4}-\d{2}-\d{2}$/;
+  var table=q.get('table_id')||q.get('table'), room=q.get('room_id')||q.get('room');
+  var type=(q.get('type')==='table'||(table&&!room))?'table':'room', id=type==='table'?table:room;
+  if(!id) return null;
+  var ci=q.get('checkin')||'', co=q.get('checkout')||'';
+  return {type:type,id:id,checkin:ymd.test(ci)?ci:'',checkout:ymd.test(co)?co:''};
+}
+function applyPreselect(){
+  if(!_pre) return;
+  var p=_pre; _pre=null;                                    // apply once
+  var sel=el('roomSel'), opt=Array.prototype.filter.call(sel.options,function(o){return o.value===p.id&&!o.disabled;})[0];
+  if(!opt) return;                                          // unknown or unavailable item: just show the normal form
+  sel.value=p.id; onRoomChange();
+  var today=new Date(Date.now()+3*3600000).toISOString().slice(0,10);
+  if(p.type==='room'&&p.checkin&&p.checkout&&p.checkin>=today&&p.checkout>p.checkin){
+    var ci=el('checkin'), co=el('checkout');
+    ci.value=p.checkin; ci.dispatchEvent(new Event('change'));
+    co.value=p.checkout; co.dispatchEvent(new Event('change'));
+  }
+}
+
+// ── SUMMARY ───────────────────────────────────────────
+function updateSummary() {
+  var type=el('type').value, sel=el('roomSel'), opt=sel&&sel.options[sel.selectedIndex];
+  var guests=type==='table'?(el('guestsTable')?el('guestsTable').value||1:1):(el('guests')?el('guests').value||1:1);
+  setText('s-guests',guests);
+  setText('s-type',type==='table'?'Table Reservation':'Room Booking');
+  if(!opt||!opt.value){
+    ['s-room','s-checkin','s-checkout','s-nights','s-rate','s-sub','s-tax'].forEach(function(id){setText(id,'\u2014');});
+    setText('s-total','KES \u2014'); return;
+  }
+  var d=opt.dataset;
+  setText('s-room',type==='room'?'Room '+d.number+' ('+d.subtype+')':'Table '+d.number+' \u2014 '+d.subtype);
+  setText('s-rate','KES '+Number(d.price).toLocaleString()+(type==='table'?'/hr':'/night'));
+  if(type==='table'){
+    var date=el('tableDate')?el('tableDate').value:'';
+    var start=el('startTime')?el('startTime').value:'';
+    var dur=parseInt((el('duration')?el('duration').value:'2')||'2');
+    if(date&&start){
+      var parts=start.split(':').map(Number), endDt=new Date(date+'T'+start+':00');
+      endDt.setHours(endDt.getHours()+dur, endDt.getMinutes(), 0, 0);
+      setText('s-checkin',fmtDate(date)+' '+start);
+      setText('s-checkout',fmtDate(date)+' '+String(endDt.getHours()).padStart(2,'0')+':'+String(endDt.getMinutes()).padStart(2,'0'));
+      setText('s-nights',dur+' hr'+(dur>1?'s':''));
+      var sub=dur*Number(d.price), tax=Math.round(sub*0.16);
+      setText('s-sub','KES '+sub.toLocaleString()); setText('s-tax','KES '+tax.toLocaleString()); setText('s-total','KES '+(sub+tax).toLocaleString());
+    } else {
+      ['s-checkin','s-checkout','s-nights','s-sub','s-tax'].forEach(function(id){setText(id,'\u2014');});
+      setText('s-total','KES \u2014');
+    }
+  } else {
+    var ci=el('checkin')?el('checkin').value:'', co=el('checkout')?el('checkout').value:'';
+    if(ci) setText('s-checkin',fmtDate(ci));
+    if(co) setText('s-checkout',fmtDate(co));
+    if(ci&&co&&co>ci){
+      var n=calcNights(ci,co), sub=n*Number(d.price), tax=Math.round(sub*0.16);
+      setText('s-nights',n+(n===1?' night':' nights'));
+      setText('s-sub','KES '+sub.toLocaleString()); setText('s-tax','KES '+tax.toLocaleString()); setText('s-total','KES '+(sub+tax).toLocaleString());
+    } else {
+      ['s-nights','s-sub','s-tax'].forEach(function(id){setText(id,'\u2014');});
+      setText('s-total','KES \u2014');
+    }
+  }
+}
+
+// ── PAYMENT METHOD ─────────────────────────────────────
+var selectedPay='M-Pesa';
+function selPay(elem,method){document.querySelectorAll('.pm').forEach(function(m){m.classList.remove('sel');});elem.classList.add('sel');selectedPay=method;}
+
+// ════════════════════════════════════════════════════
+//  FORM SUBMIT — POST /api/payments/initiate-session
+//  (was action:initiatePaymentSession). NOTE: this endpoint does
+//  not exist until payment-integration.gs is converted — the form
+//  will show a network/connection error until then. Everything else
+//  on this page (My Bookings, availability, room/table browsing)
+//  works today.
+// ════════════════════════════════════════════════════
+function bindFormSubmit() {
+  var form=el('bookingForm'); if(!form)return;
+  form.addEventListener('submit',async function(e){
+    e.preventDefault(); if(!validate())return;
+    var avail=el('availStatus');
+    if(avail&&avail.classList.contains('taken')){showErr('This option is already booked. Please choose different dates.');return;}
+    setStep(2); showLoader('Preparing your booking\u2026');
+    var type=el('type').value, itemId=el('roomSel').value;
+    var name=el('name').value.trim(), phone=el('phone').value.trim(), email=el('email').value.trim();
+    var checkin,checkout,guests,notes;
+    if(type==='table'){
+      var date=el('tableDate').value, start=el('startTime').value, dur=parseInt(el('duration').value||'2');
+      var parts=start.split(':').map(Number), endDt=new Date(date+'T'+start+':00');
+      endDt.setHours(endDt.getHours()+dur, endDt.getMinutes(), 0, 0);
+      checkin=date+'T'+start+':00';
+      checkout=date+'T'+String(endDt.getHours()).padStart(2,'0')+':'+String(endDt.getMinutes()).padStart(2,'0')+':00';
+      guests=el('guestsTable').value; notes=el('tableNotes').value.trim();
+    } else {
+      checkin=el('checkin').value; checkout=el('checkout').value;
+      guests=el('guests').value; notes=el('notes').value.trim();
+    }
+    var callbackBase=BOOK_URL+'?return=1&sid=';
+    var payload={name:name,phone:phone,email:email,type:type,checkin:checkin,checkout:checkout,guests:guests,notes:notes,callback_url_base:callbackBase,payment_method:selectedPay};
+    if(type==='table') payload.table_id=itemId; else payload.room_id=itemId;
+    try {
+      setLoaderTxt('Connecting to PesaPal\u2026');
+      var res=await apiPost('/payments/initiate-session', payload); if(!res)return;
+      if(res.status==='taken'){hideLoader();setStep(1);showErr('Already booked. Please choose different dates.');setAvail('taken','\u2717 Not available.');return;}
+      if(res.status!=='success'||!res.redirect_url){hideLoader();setStep(1);showErr(res.message||'Could not connect to payment gateway.');return;}
+      hideLoader(); setStep(3);
+      hideAll();
+      el('successScreen').classList.add('show');
+      updateSUI({icon:'\uD83D\uDD10',title:'Booking Reserved!',sub:'Your spot is held for 15 minutes. Complete payment to confirm.',badge:'KES '+Number(res.amount).toLocaleString(),note:'Redirecting to <strong>PesaPal</strong> in <strong id="cdSec">5</strong> seconds\u2026'});
+      startCountdown(res.redirect_url);
+    } catch(err) { hideLoader();setStep(1);showErr('Network error. Please try again.'); }
+  });
+}
+
+// ════════════════════════════════════════════════════
+//  POLL — POST /api/payments/session-status
+//  (was action:checkSessionPaymentStatus, also pending conversion)
+// ════════════════════════════════════════════════════
+async function pollPaymentStatus(sessionId, trackingId) {
+  updateSUI({icon:'\u23F3',title:'Confirming Payment\u2026',sub:'Please wait while we verify with PesaPal.',note:'\u23F3 Checking\u2026',showPoll:true});
+  var attempts=0, MAX=12, INTERVAL=5000;
+  var poll=async function(){
+    attempts++;
+    var bar=el('pollBar'); if(bar) bar.style.width=Math.min((attempts/MAX)*100,95)+'%';
+    try {
+      var payload={session_id:sessionId};
+      if(trackingId) payload.order_tracking_id=trackingId;
+      var res=await apiPost('/payments/session-status', payload); if(!res)return;
+      if(res.status==='confirmed'){
+        if(bar) bar.style.width='100%';
+        setStep(4);
+        updateSUI({icon:'\u2705',title:'Payment Confirmed!',sub:'Your booking is saved. Redirecting to your receipt\u2026',note:'Booking ID: <strong>'+(res.booking_id||'')+'</strong>'});
+        el('pollWrap').style.display='none';
+        setTimeout(function(){
+          loadBookings();
+          var url=res.receipt_url||(RECEIPT_BASE+encodeURIComponent(res.booking_id));
+          window.location.href=url;
+        },2000);
+        return;
+      }
+      if(res.status==='failed'){
+        el('pollWrap').style.display='none';
+        updateSUI({icon:'\u274C',title:'Payment Failed',sub:res.message||'Payment could not be processed.',note:'',actions:true});
+        return;
+      }
+      if(attempts<MAX){updateNote('\u23F3 Still verifying\u2026 ('+attempts+'/'+MAX+')');setTimeout(poll,INTERVAL);}
+      else{el('pollWrap').style.display='none';updateSUI({icon:'\uD83D\uDCE7',title:'Check Your Email',sub:'Verification taking longer. If payment succeeded, receipt will arrive by email.',note:'',actions:true});}
+    } catch(err){if(attempts<MAX)setTimeout(poll,INTERVAL);else updateNote('Network error. Check your email.');}
+  };
+  poll();
+}
+
+// ════════════════════════════════════════════════════
+//  SUCCESS SCREEN
+// ════════════════════════════════════════════════════
+function hideAll(){
+  el('heroSection').style.display='none';
+  el('tabBar').style.display='none';
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+}
+function updateSUI(opts){
+  if(opts.icon!==undefined)  el('sucIcon').textContent=opts.icon;
+  if(opts.title!==undefined) el('sucTitle').textContent=opts.title;
+  if(opts.sub!==undefined)   el('sucSub').textContent=opts.sub;
+  if(opts.badge!==undefined){var b=el('sucBid');if(opts.badge){b.textContent=opts.badge;b.style.display='';}else b.style.display='none';}
+  if(opts.note!==undefined)  updateNote(opts.note);
+  var acts=el('sucActions'); if(acts) acts.style.display=opts.actions?'':'none';
+  var pw=el('pollWrap'); if(pw) pw.style.display=opts.showPoll?'':(pw.style.display===''?'':'none');
+}
+function updateNote(html){var n=el('countdownNote');if(n)n.innerHTML=html;}
+function startCountdown(url){var n=5,iv=setInterval(function(){n--;var e=el('cdSec');if(e)e.textContent=n;if(n<=0){clearInterval(iv);window.location.href=url;}},1000);}
+
+// ════════════════════════════════════════════════════
+//  VALIDATION
+// ════════════════════════════════════════════════════
+function validate(){
+  clearErrs(); var ok=true, type=el('type').value;
+  if(el('name').value.trim().length<3){fldErr('name','err-name');ok=false;}
+  if(el('phone').value.trim().length<9){fldErr('phone','err-phone');ok=false;}
+  if(!el('email').value.includes('@')){fldErr('email','err-email');ok=false;}
+  if(!el('roomSel').value){fldErr('roomSel','err-room');ok=false;}
+  if(type==='table'){
+    if(!el('tableDate')||!el('tableDate').value){fldErr('tableDate','err-tableDate');ok=false;}
+    if(!el('startTime')||!el('startTime').value){
+      fldErr('startTime','err-startTime');ok=false;
+    } else {
+      var today=new Date().toISOString().split('T')[0];
+      if(el('tableDate').value===today){
+        var minT=new Date(Date.now()+15*60*1000);
+        var minMs=minT.getHours()*3600000+minT.getMinutes()*60000;
+        var selT=el('startTime').value.split(':').map(Number);
+        var selMs=selT[0]*3600000+selT[1]*60000;
+        if(selMs<minMs){
+          fldErr('startTime','err-startTime');
+          var errEl=el('err-startTime');
+          if(errEl) errEl.textContent='Start time must be at least 15 minutes from now.';
+          ok=false;
+        }
+      }
+    }
+  } else {
+    var ci=el('checkin')?el('checkin').value:'', co=el('checkout')?el('checkout').value:'';
+    if(!ci){fldErr('checkin','err-checkin');ok=false;}
+    if(!co||co<=ci){fldErr('checkout','err-checkout');ok=false;}
+  }
+  return ok;
+}
+function fldErr(inputId,errId){var i=el(inputId);if(i)i.classList.add('err');var e=el(errId);if(e)e.classList.add('show');}
+function clearErrs(){document.querySelectorAll('.ferr').forEach(function(e){e.classList.remove('show');});document.querySelectorAll('input,select').forEach(function(e){e.classList.remove('err');});var eb=el('errBanner');if(eb){eb.textContent='';eb.classList.remove('show');}}
+function showErr(msg){var eb=el('errBanner');if(!eb)return;eb.textContent=msg;eb.classList.add('show');eb.scrollIntoView({behavior:'smooth',block:'center'});}
+
+// ════════════════════════════════════════════════════
+//  STEPS
+// ════════════════════════════════════════════════════
+function setStep(n){for(var i=1;i<=4;i++){var s=el('si'+i);if(!s)continue;s.classList.remove('active','done');if(i<n)s.classList.add('done');if(i===n)s.classList.add('active');}}
+
+// ════════════════════════════════════════════════════
+//  LOADER
+// ════════════════════════════════════════════════════
+function showLoader(msg){setLoaderTxt(msg);el('loader').classList.add('show');var b=el('submitBtn');if(b)b.disabled=true;}
+function hideLoader(){el('loader').classList.remove('show');var b=el('submitBtn');if(b)b.disabled=false;}
+function setLoaderTxt(msg){var e=el('loaderTxt');if(e)e.textContent=msg||'Please wait\u2026';}
+
+// ════════════════════════════════════════════════════
+//  UTILITIES
+// ════════════════════════════════════════════════════
+function el(id){return document.getElementById(id);}
+function setText(id,v){var e=el(id);if(e)e.textContent=v;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function cap(s){return String(s||'').replace(/_/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});}
+function calcNights(c1,c2){return Math.max(1,Math.round((new Date(c2)-new Date(c1))/86400000));}
+function fmtDate(d){try{var dd=String(d).split('T')[0];return new Date(dd+'T12:00:00').toLocaleDateString('en-KE',{day:'numeric',month:'short',year:'numeric'});}catch(e){return d;}}
+function fmtDateTime(d){try{var dt=new Date(d);return dt.toLocaleDateString('en-KE',{day:'numeric',month:'short'})+' '+dt.toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'});}catch(e){return d;}}
+</script>
+<script src="/calendar.js"></script>
+<script src="/site.js"></script>
+<script src="/social.js"></script>
+</body>
+</html>

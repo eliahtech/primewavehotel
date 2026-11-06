@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<script src="/guard.js" data-min="admin"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Console | PrimeWave Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets.css"></head><body>
+<header class="top"><a class="logo" href="/">PRIME<em>WAVE</em> <span style="font-size:12px;color:#fff;font-weight:400;letter-spacing:0">Staff</span></a>
+<div><span id="who" style="color:#fff;font-size:13px"></span><a class="l" href="/">View site</a><a class="l" href="#" onclick="logout()">Sign out</a></div></header>
+<div class="wrap"><div class="tabs" id="tabs"></div><div id="msg" class="msg" role="status"></div><div id="panes"></div></div>
+<script src="/staff.js"></script>
+<script src="/social.js"></script>
+<script src="/console.js"></script>
+<script>Console.start({ min: 'admin', modules: ['overview', 'bookings', 'walkin', 'payments', 'rooms', 'news', 'users'] });</script>
+<script src="/mobile.js"></script>
+</body></html>

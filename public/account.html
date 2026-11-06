@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<script src="/guard.js" data-min="user"></script><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>My Account | PrimeWave Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets.css">
+<style>
+body{padding-bottom:78px}
+.wrap{max-width:720px;margin:0 auto;padding:16px 14px}
+.hero{background:linear-gradient(135deg,var(--navy),#0e5a8f);color:#fff;border-radius:14px;padding:20px;margin-bottom:14px}
+.hero small{opacity:.8;font-size:12.5px}.hero h2{font-family:'Playfair Display',serif;font-size:22px;margin:4px 0 12px}
+.hero .big{font-size:30px;font-weight:700;color:var(--gold);line-height:1}
+.hero .meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;margin-top:12px;opacity:.95}
+.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.quick a,.quick button{display:block;text-align:center;padding:14px 8px;border-radius:12px;background:#fff;box-shadow:var(--shadow);color:var(--navy);font:inherit;font-weight:600;font-size:13.5px;text-decoration:none;border:0;cursor:pointer}
+.quick span{display:block;font-size:22px;margin-bottom:4px}
+.bk{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:14px;margin-bottom:12px}
+.bk .t{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.bk h4{font-size:15px;color:var(--navy)}.bk .s{font-size:12.5px;color:var(--muted);margin:2px 0 8px}
+.bk .d{font-size:13px;line-height:1.7}.bk .a{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.seg{display:flex;background:#e9edf2;border-radius:10px;padding:3px;margin-bottom:12px}
+.seg button{flex:1;border:0;background:transparent;padding:9px;border-radius:8px;font:inherit;font-weight:600;font-size:13px;color:var(--muted);cursor:pointer}
+.seg button.on{background:#fff;color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.pane{display:none}.pane.on{display:block}
+.empty{text-align:center;color:var(--muted);padding:34px 10px;font-size:14px}
+.pay{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);font-size:13.5px;align-items:center}
+.pay:last-child{border:0}
+nav.bottom{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav.bottom button{flex:1;border:0;background:none;padding:9px 2px 8px;font:inherit;font-size:11px;color:var(--muted);cursor:pointer}
+nav.bottom button span{display:block;font-size:20px}nav.bottom button.on{color:var(--navy);font-weight:700}
+.toggle{display:flex;justify-content:space-between;align-items:center;padding:6px 0}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+.meter{height:5px;border-radius:3px;background:#e5e7eb;margin-top:6px;overflow:hidden}.meter i{display:block;height:100%;width:0;transition:.2s}
+@media(min-width:700px){.quick{grid-template-columns:repeat(4,1fr)}}
+</style></head><body>
+<header class="top"><a class="logo" href="/">PRIME<em>WAVE</em></a><div><a class="l" href="/rooms.html">Rooms</a><a class="l" href="#" onclick="logout()">Sign out</a></div></header>
+<div class="wrap"><div id="msg" class="msg"></div>
+
+<div class="pane on" id="p-home">
+  <div class="hero" id="hero"><small>Loading…</small></div>
+  <div class="quick">
+    <a href="/book.html"><span>🛏️</span>Book a stay</a>
+    <button onclick="tab('bookings')"><span>📅</span>My bookings</button>
+    <button onclick="tab('payments')"><span>🧾</span>Receipts</button>
+    <a href="/contact.html"><span>💬</span>Contact us</a>
+  </div>
+  <div class="card" id="stats"></div>
+</div>
+
+<div class="pane" id="p-bookings">
+  <div class="seg" id="seg"><button data-s="upcoming" class="on">Upcoming</button><button data-s="past">Past</button><button data-s="cancelled">Cancelled</button></div>
+  <div id="blist"></div>
+</div>
+
+<div class="pane" id="p-payments"><div class="card" id="plist"></div></div>
+
+<div class="pane" id="p-profile">
+  <div class="card"><form onsubmit="return saveProfile(event)">
+    <h3 style="color:var(--navy);margin-bottom:4px">Your details</h3>
+    <label>Full name</label><input id="pf-name" required minlength="2">
+    <label>Email</label><input id="pf-email" disabled><div class="hint">Email can't be changed here. Contact us if you need to update it.</div>
+    <label>Phone</label><input id="pf-phone" required>
+    <label>National ID <span style="font-weight:400">(optional, speeds up check-in)</span></label><input id="pf-nid" inputmode="numeric">
+    <div style="margin-top:16px"><button class="btn" id="pf-btn">Save changes</button></div></form></div>
+  <div class="card" style="margin-top:12px"><div class="toggle"><div><b style="color:var(--navy)">Offers &amp; news</b><div class="hint">Occasional emails about deals and events.</div></div>
+    <input type="checkbox" id="nl" style="width:22px;height:22px" onchange="toggleNl(this)"></div></div>
+</div>
+
+<div class="pane" id="p-security">
+  <div class="card"><form onsubmit="return changePw(event)">
+    <h3 style="color:var(--navy);margin-bottom:4px">Change password</h3>
+    <label>Current password</label><input id="pw-old" type="password" autocomplete="current-password" required>
+    <label>New password (min 8 characters)</label><input id="pw-new" type="password" minlength="8" maxlength="72" autocomplete="new-password" required oninput="meter(this.value)">
+    <div class="meter"><i id="pw-m"></i></div><div class="hint" id="pw-h"></div>
+    <label>Confirm new password</label><input id="pw-new2" type="password" autocomplete="new-password" required>
+    <div style="margin-top:16px"><button class="btn" id="pw-btn">Update password</button></div></form></div>
+  <div class="card" style="margin-top:12px"><h3 style="color:var(--navy);margin-bottom:6px">Devices</h3>
+    <p class="hint" style="margin-bottom:12px">Lost a phone or used a shared computer? Sign out everywhere.</p>
+    <button class="btn red" onclick="logoutAll()">Sign out of all devices</button></div>
+</div>
+</div>
+
+<nav class="bottom" id="nav">
+  <button data-t="home" class="on"><span>🏠</span>Home</button><button data-t="bookings"><span>📅</span>Bookings</button>
+  <button data-t="payments"><span>🧾</span>Receipts</button><button data-t="profile"><span>👤</span>Profile</button><button data-t="security"><span>🔒</span>Security</button>
+</nav>
+
+<script src="/staff.js"></script>
+<script>
+(function(){
+if(!TOKEN || !USER){ location.href='/login.html?redirect='+encodeURIComponent('/account.html'); return; }
+if(ME>=2){ const l=document.querySelector('header.top div'); l.insertAdjacentHTML('afterbegin','<a class="l" href="'+({4:'/systemowner.html',3:'/owner.html',2:'/admin.html'}[ME])+'">Staff console</a>'); }
+
+let BOOKINGS=[], PAYMENTS=[], SEG='upcoming';
+const now = () => Date.now();
+const STATUS = {pending_payment:'Awaiting payment',confirmed:'Confirmed',checked_in:'Checked in',checked_out:'Completed',cancelled:'Cancelled'};
+const fmt = v => new Date(v).toLocaleString('en-GB',{timeZone:'Africa/Nairobi',weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+const fmtDay = v => new Date(v).toLocaleDateString('en-GB',{timeZone:'Africa/Nairobi',weekday:'short',day:'numeric',month:'short',year:'numeric'});
+
+window.tab = function(t){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  scrollTo(0,0);
+};
+$('nav').addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) tab(b.dataset.t); });
+$('seg').addEventListener('click',e=>{ if(!e.target.dataset.s) return; SEG=e.target.dataset.s;
+  document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('on',b.dataset.s===SEG)); renderBookings(); });
+
+const isUpcoming = b => ['pending_payment','confirmed','checked_in'].includes(b.status) && new Date(b.checkout_date).getTime() > now();
+const isPast     = b => b.status!=='cancelled' && !isUpcoming(b);
+
+function renderHome(){
+  const up = BOOKINGS.filter(isUpcoming).sort((a,b)=>new Date(a.checkin_date)-new Date(b.checkin_date));
+  const first = USER.name.split(' ')[0];
+  if(up.length){
+    const n=up[0], ms=new Date(n.checkin_date)-now(), days=Math.ceil(ms/86400000);
+    const lead = n.status==='checked_in' ? 'You are checked in' : ms<=0 ? 'Your stay is under way' : days===1 ? 'Tomorrow' : days+' days to go';
+    $('hero').innerHTML='<small>Welcome back, '+esc(first)+'</small><h2>'+esc(n.item_label)+'</h2><div class="big">'+esc(lead)+'</div>'
+      +'<div class="meta"><span>📅 '+fmt(n.checkin_date)+' → '+fmt(n.checkout_date)+'</span><span>👥 '+esc(n.num_guests)+' guest'+(n.num_guests>1?'s':'')+'</span><span>'+(n.payment_status==='paid'?'✅ Paid':'⏳ Payment pending')+'</span></div>'
+      +'<div style="margin-top:14px"><a class="btn gold sm" href="/receipt.html?booking_id='+encodeURIComponent(n.booking_id)+'">View receipt</a></div>';
+  } else {
+    $('hero').innerHTML='<small>Welcome, '+esc(first)+'</small><h2>Ready for your next stay?</h2><div style="margin:4px 0 14px;opacity:.9;font-size:14px">Rooms, dining tables and more — book in under two minutes.</div><a class="btn gold" href="/book.html">Book now</a>';
+  }
+  const paid = PAYMENTS.filter(p=>p.status==='completed').reduce((t,p)=>t+Number(p.amount),0);
+  $('stats').innerHTML='<div style="display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:8px">'
+    +[[BOOKINGS.filter(b=>b.status!=='cancelled').length,'Stays & bookings'],[kes(paid),'Total spent'],[up.length,'Upcoming']].map(s=>'<div><b style="font-size:18px;color:var(--navy)">'+esc(s[0])+'</b><div class="hint">'+esc(s[1])+'</div></div>').join('')+'</div>';
+}
+
+function rebook(b){ return b.type==='table' ? '/book.html?type=table&table_id='+encodeURIComponent(b.table_id||'') : '/book.html?type=room&room_id='+encodeURIComponent(b.room_id||''); }
+function renderBookings(){
+  const list = BOOKINGS.filter(b=> SEG==='upcoming'?isUpcoming(b) : SEG==='past'?isPast(b) : b.status==='cancelled');
+  if(!list.length){ $('blist').innerHTML='<div class="empty">'+({upcoming:'No upcoming bookings.',past:'No past stays yet.',cancelled:'Nothing cancelled.'}[SEG])+(SEG==='upcoming'?'<br><br><a class="btn gold" href="/book.html">Book a stay</a>':'')+'</div>'; return; }
+  list.sort((a,b)=> SEG==='upcoming' ? new Date(a.checkin_date)-new Date(b.checkin_date) : new Date(b.checkin_date)-new Date(a.checkin_date));
+  $('blist').innerHTML=list.map(b=>{
+    const canCancel = b.payment_status!=='paid' && ['pending_payment','confirmed'].includes(b.status);
+    return '<div class="bk"><div class="t"><div><h4>'+esc(b.item_label)+'</h4><div class="s">'+esc(b.booking_id)+'</div></div><span class="badge '+esc(b.status)+'">'+esc(STATUS[b.status]||b.status)+'</span></div>'
+      +'<div class="d">📅 '+fmt(b.checkin_date)+'<br>➜ '+fmt(b.checkout_date)+'<br>👥 '+esc(b.num_guests)+' · '+kes(b.total_amount)+' · '+(b.payment_status==='paid'?'Paid':'Unpaid')+'</div>'
+      +'<div class="a">'+(b.status!=='cancelled'?'<a class="btn ghost sm" href="/receipt.html?booking_id='+encodeURIComponent(b.booking_id)+'">Receipt</a>':'')
+      +(canCancel?'<button class="btn red sm" data-cancel="'+esc(b.booking_id)+'">Cancel</button>':'')
+      +(SEG==='past'?'<a class="btn ghost sm" href="'+rebook(b)+'">Book again</a>':'')+'</div></div>';
+  }).join('');
+}
+$('blist').addEventListener('click',async e=>{ const id=e.target.dataset.cancel; if(!id||!confirm('Cancel booking '+id+'?')) return;
+  const j=await api('POST','/bookings/'+encodeURIComponent(id)+'/cancel'); note(j.message||'Done',j.status==='success'); if(j.status==='success') load(); });
+
+function renderPayments(){
+  $('plist').innerHTML = PAYMENTS.length ? '<h3 style="color:var(--navy);margin-bottom:6px">Payment history</h3>'+PAYMENTS.map(p=>'<div class="pay"><div><b>'+kes(p.amount)+'</b><div class="hint">'+fmtDay(p.created_at)+' · '+esc(p.method)+(p.tracking_id?' · '+esc(p.tracking_id):'')+'</div></div>'
+    +'<div style="text-align:right"><span class="badge '+esc(p.status)+'">'+esc(p.status)+'</span><br><a href="/receipt.html?booking_id='+encodeURIComponent(p.booking_id)+'" style="font-size:12px;color:var(--navy)">Receipt</a></div></div>').join('')
+    : '<div class="empty">No payments yet.</div>';
+}
+
+async function load(){
+  const [b,p,m]=await Promise.all([api('GET','/bookings/mine'),api('GET','/payments/mine'),api('GET','/auth/me')]);
+  if(b.status!=='success') return note(b.message||'Could not load your bookings.');
+  BOOKINGS=b.data||[]; PAYMENTS=p.data||[];
+  if(m.status==='success'){ $('pf-name').value=m.data.name||''; $('pf-email').value=m.data.email||''; $('pf-phone').value=m.data.phone||''; $('pf-nid').value=m.data.national_id||''; $('nl').checked=!!m.data.newsletter; }
+  renderHome(); renderBookings(); renderPayments();
+}
+
+window.saveProfile = async function(e){ e.preventDefault(); const b=$('pf-btn'); b.disabled=true;
+  const j=await api('PUT','/auth/profile',{name:$('pf-name').value,phone:$('pf-phone').value,national_id:$('pf-nid').value}); b.disabled=false;
+  if(j.status==='success'){ sessionStorage.setItem('pw_token',j.token); TOKEN=j.token; sessionStorage.setItem('pw_user',JSON.stringify(j.user)); USER=j.user; }
+  note(j.message||'Failed.',j.status==='success'); return false; };
+window.toggleNl = async function(cb){ const j=await api('POST','/subscribe/me',{subscribed:cb.checked}); if(j.status!=='success'){ cb.checked=!cb.checked; } note(j.message||'Failed.',j.status==='success'); };
+
+window.meter = function(v){ let s=0; if(v.length>=8)s++; if(v.length>=12)s++; if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++; if(/\d/.test(v))s++; if(/[^A-Za-z0-9]/.test(v))s++;
+  $('pw-m').style.width=(s*20)+'%'; $('pw-m').style.background=['#e74c3c','#e74c3c','#e67e22','#f1c40f','#27ae60','#27ae60'][s]; $('pw-h').textContent=v?['Very weak','Weak','Fair','Good','Strong','Very strong'][s]:''; };
+window.changePw = async function(e){ e.preventDefault();
+  if($('pw-new').value!==$('pw-new2').value) return note('New passwords do not match.'), false;
+  const b=$('pw-btn'); b.disabled=true;
+  const j=await api('POST','/auth/change-password',{oldPassword:$('pw-old').value,newPassword:$('pw-new').value}); b.disabled=false;
+  if(j.status==='success'){ if(j.token){ sessionStorage.setItem('pw_token',j.token); TOKEN=j.token; } e.target.reset(); meter(''); }
+  note(j.message||'Failed.',j.status==='success'); return false; };
+window.logoutAll = async function(){ if(!confirm('Sign out of every device, including this one?')) return;
+  const j=await api('POST','/auth/logout-all'); if(j.status==='success') logout(); else note(j.message||'Failed.'); };
+
+load();
+})();
+</script></body></html>

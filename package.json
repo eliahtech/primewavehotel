@@ -1,0 +1,22 @@
+{
+  "name": "primewave-node",
+  "version": "0.6.0",
+  "description": "PrimeWave Hotel \u2014 Node.js/Supabase backend, Vercel-ready",
+  "main": "server/app.js",
+  "engines": {
+    "node": ">=26 <27"
+  },
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "node --watch --env-file-if-exists=.env server/app.js",
+    "test": "node tests/run.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.14"
+  }
+}

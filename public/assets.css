@@ -1,0 +1,75 @@
+:root{--navy:#0a3d62;--navy2:#08304d;--gold:#c9a84c;--green:#27ae60;--red:#e74c3c;--amber:#e67e22;--light:#f7f5f0;--text:#1e2530;--muted:#6b7280;--border:#e5e7eb;--r:10px;--shadow:0 4px 24px rgba(10,61,98,.11)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--light);color:var(--text)}
+header.top{background:var(--navy);height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold);letter-spacing:2px;text-decoration:none}
+.logo em{color:#fff;font-style:normal;font-weight:400}
+header.top a.l{color:rgba(255,255,255,.8);text-decoration:none;font-size:13.5px;margin-left:14px}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:28px}
+label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:14px 0 5px}
+input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font:inherit;font-size:14px;background:#fff}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy)}
+.btn{display:inline-block;border:0;border-radius:8px;padding:11px 20px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;background:var(--navy);color:#fff;text-decoration:none}
+.btn:hover{background:var(--navy2)}.btn:disabled{opacity:.55;cursor:wait}
+.btn.gold{background:var(--gold);color:var(--navy)}.btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--border)}
+.btn.sm{padding:6px 11px;font-size:12px}.btn.red{background:var(--red)}
+.msg{margin-top:14px;padding:10px 12px;border-radius:8px;font-size:13.5px;display:none}
+.msg.err{display:block;background:#fdedec;color:#a93226}.msg.ok{display:block;background:#eafaf1;color:#1a7a44}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11.5px;font-weight:600;background:#eee}
+.badge.confirmed,.badge.paid,.badge.completed,.badge.available{background:#eafaf1;color:#1a7a44}
+.badge.pending_payment,.badge.pending,.badge.checked_in,.badge.occupied{background:#fef5ec;color:#935112}
+.badge.cancelled,.badge.failed,.badge.maintenance,.badge.hidden{background:#fdedec;color:#a93226}
+.badge.checked_out,.badge.refunded{background:#eaf4fb;color:#1a5276}
+.wrap{max-width:1100px;margin:20px auto;padding:0 14px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{padding:9px 16px;border:0;border-radius:8px;background:#e9edf2;font:inherit;font-weight:600;font-size:13px;cursor:pointer;color:var(--muted)}
+.tabs button.on{background:var(--navy);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px}
+.stat{background:#fff;border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}.stat b{display:block;font-size:22px;color:var(--navy)}.stat span{font-size:12px;color:var(--muted)}
+.tbl{overflow-x:auto;margin-bottom:14px}table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
+th,td{padding:9px 10px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}th{color:var(--muted);font-size:11.5px;text-transform:uppercase}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0 14px}
+.pane{display:none}.pane.on{display:block}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:14px;margin-bottom:14px}
+h3{font-size:14px;color:var(--navy);margin:0 0 10px}
+td input,td select{padding:5px 7px;font-size:12.5px;width:auto}
+
+/* ── Phones ─────────────────────────────────────────── */
+@media(max-width:700px){
+  header.top{height:auto;min-height:56px;padding:8px 12px;flex-wrap:wrap;gap:4px}
+  header.top #who{display:none}
+  .card{padding:18px}
+  .wrap{margin:12px auto}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{white-space:nowrap;flex:0 0 auto}
+  .btn{padding:12px 18px}.btn.sm{padding:9px 13px;font-size:12.5px}
+  input,select,textarea{font-size:16px} /* stops iOS zooming into fields */
+  .tbl{overflow:visible}
+  .tbl table,.tbl tbody{display:block;background:transparent}
+  .tbl thead{display:none}
+  .tbl tr{display:block;background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:6px 14px;margin-bottom:10px}
+  .tbl td{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);white-space:normal;text-align:right}
+  .tbl td:last-child{border-bottom:0;justify-content:flex-end;flex-wrap:wrap}
+  .tbl td::before{content:attr(data-label);color:var(--muted);font-size:11.5px;font-weight:600;text-transform:uppercase;text-align:left;flex:0 0 auto}
+  .tbl td[colspan]::before{content:none}
+  .tbl td input,.tbl td select{width:100%;max-width:150px}
+}
+
+/* ── Password dialog ── */
+.dlg{position:fixed;inset:0;background:rgba(8,30,50,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:1000}
+.dlg[hidden]{display:none}
+.dlg-box{background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);padding:22px;width:100%;max-width:440px}
+.dlg-box h3{font-size:17px;margin-bottom:6px}.dlg-box p{font-size:13.5px;color:var(--muted);margin-bottom:12px;line-height:1.55}
+.dlg-box input{font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.5px}
+.dlg-err{color:#a93226;font-size:12.5px;min-height:18px;margin-top:6px}
+.dlg-row{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}.dlg-act{display:flex;gap:10px;justify-content:flex-end}
+@media(max-width:700px){.dlg{align-items:flex-end;padding:0}.dlg-box{border-radius:16px 16px 0 0;max-width:none}.dlg-act .btn{flex:1}}
+
+/* ── Social icons ── */
+.social{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.social a.soc{width:42px;height:42px;border-radius:50%;background:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .15s,box-shadow .15s}
+.social a.soc:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.25)}
+.social a.soc svg{width:23px;height:23px}
+.hint{font-size:12px;color:var(--muted)}
+textarea{resize:vertical;min-height:120px}

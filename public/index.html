@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrimeWave Hotel | Luxury Stays in Nairobi</title>
+
+<meta name="description" content="PrimeWave Hotel Nairobi — luxury rooms, table reservations, instant online booking. Experience premium hospitality in the heart of Nairobi, Kenya.">
+<meta name="keywords" content="hotel nairobi, luxury hotel kenya, nairobi accommodation, primewave hotel, book hotel nairobi">
+<meta name="author" content="PrimeWave Hotel">
+<meta property="og:title" content="PrimeWave Hotel | Luxury & Comfort in Nairobi">
+<meta property="og:description" content="Experience comfort, luxury and personalized hospitality in Nairobi.">
+<meta property="og:type" content="website">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Hotel",
+  "name": "PrimeWave Hotel",
+  "description": "Luxury hotel in Nairobi offering premium rooms and table reservations.",
+  "address": { "@type": "PostalAddress", "addressLocality": "Nairobi", "addressCountry": "KE" },
+  "telephone": "+254115028591",
+  "priceRange": "KES 5,000 – 10,000",
+  "starRating": { "@type": "Rating", "ratingValue": "4" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy:  #0a3d62;
+  --navy2: #08304d;
+  --gold:  #c9a84c;
+  --gold2: #e8c96d;
+  --light: #f7f5f0;
+  --white: #ffffff;
+  --text:  #2c2c2c;
+  --muted: #6b7280;
+  --shadow: 0 4px 24px rgba(10,61,98,.13);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);overflow-x:hidden;}
+
+/* HEADER */
+header{background:var(--navy);padding:18px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3);}
+.logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold);letter-spacing:2px;text-decoration:none;}
+.logo span{color:var(--white);font-weight:400;}
+nav{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+nav a{color:rgba(255,255,255,.85);text-decoration:none;padding:8px 14px;border-radius:4px;font-size:13.5px;font-weight:500;letter-spacing:.3px;transition:all .2s;}
+nav a:hover,nav a.active{background:rgba(255,255,255,.1);color:var(--gold);}
+.nav-book{background:var(--gold)!important;color:var(--navy)!important;font-weight:600!important;padding:8px 18px!important;border-radius:4px!important;}
+.nav-book:hover{background:var(--gold2)!important;}
+
+/* HERO */
+.hero{position:relative;height:92vh;min-height:560px;background:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&q=80') center/cover no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(160deg,rgba(8,48,77,.82) 0%,rgba(10,61,98,.5) 60%,rgba(0,0,0,.2) 100%);}
+.hero-content{position:relative;z-index:2;padding:0 20px;animation:fadeUp .9s ease both;}
+.hero-badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:20px;margin-bottom:24px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(38px,7vw,72px);color:var(--white);line-height:1.1;margin-bottom:20px;text-shadow:0 2px 12px rgba(0,0,0,.4);}
+.hero h1 em{color:var(--gold);font-style:normal;}
+.hero p{font-size:17px;color:rgba(255,255,255,.85);max-width:520px;margin:0 auto 36px;font-weight:300;line-height:1.7;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:4px;text-decoration:none;font-weight:600;font-size:14px;letter-spacing:.5px;transition:all .2s;border:2px solid var(--gold);}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 20px rgba(201,168,76,.4);}
+.btn-outline{background:transparent;color:var(--white);padding:14px 32px;border-radius:4px;text-decoration:none;font-weight:500;font-size:14px;border:2px solid rgba(255,255,255,.6);transition:all .2s;}
+.btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,.1);}
+.scroll-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:11px;letter-spacing:2px;text-transform:uppercase;animation:bounce 2s infinite;}
+.scroll-cue::after{content:'↓';display:block;text-align:center;font-size:16px;margin-top:4px;}
+
+/* STATS BAR */
+.stats-bar{background:var(--navy);display:grid;grid-template-columns:repeat(4,1fr);}
+.stat{padding:22px 20px;text-align:center;border-right:1px solid rgba(255,255,255,.08);}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);font-weight:700;}
+.stat-label{font-size:12px;color:rgba(255,255,255,.6);letter-spacing:.5px;margin-top:2px;}
+
+/* SECTIONS */
+section{padding:90px 40px;}
+.section-header{text-align:center;margin-bottom:56px;}
+.section-tag{display:inline-block;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.1);padding:5px 14px;border-radius:20px;margin-bottom:14px;}
+.section-header h2{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,42px);color:var(--navy);line-height:1.2;margin-bottom:14px;}
+.section-header p{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto;line-height:1.7;}
+
+/* FEATURES */
+.features{background:var(--light);}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
+.feature-card{background:var(--white);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);transition:transform .3s,box-shadow .3s;animation:fadeUp .6s ease both;}
+.feature-card:nth-child(2){animation-delay:.1s;}
+.feature-card:nth-child(3){animation-delay:.2s;}
+.feature-card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(10,61,98,.18);}
+.feature-card img{width:100%;height:210px;object-fit:cover;display:block;}
+.feature-body{padding:24px;}
+.feature-body h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--navy);margin-bottom:10px;}
+.feature-body p{font-size:14px;color:var(--muted);line-height:1.7;}
+
+/* ROOMS */
+.rooms-section{background:var(--white);}
+.rooms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;max-width:1100px;margin:0 auto 48px;}
+.room-card{background:var(--white);border-radius:10px;overflow:hidden;border:1px solid #eee;box-shadow:var(--shadow);transition:transform .3s;}
+.room-card:hover{transform:translateY(-5px);}
+.room-card img{width:100%;height:220px;object-fit:cover;display:block;}
+.room-info{padding:22px;}
+.room-type{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px;}
+.room-info h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin-bottom:8px;}
+.room-info p{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:16px;}
+.room-price{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid #f0f0f0;}
+.price-tag{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);font-weight:700;}
+.price-tag span{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);font-weight:400;}
+.btn-sm{background:var(--navy);color:var(--white);padding:9px 18px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:500;transition:background .2s;}
+.btn-sm:hover{background:var(--navy2);}
+#rooms-loading{text-align:center;padding:40px;color:var(--muted);}
+.spinner-ring{width:32px;height:32px;border:3px solid #eee;border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;}
+
+/* WHY */
+.why{background:var(--light);}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
+.why-item{background:var(--white);border-radius:10px;padding:30px 24px;text-align:center;box-shadow:var(--shadow);transition:transform .3s;}
+.why-item:hover{transform:translateY(-4px);}
+.why-icon{font-size:32px;margin-bottom:14px;}
+.why-item h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:8px;}
+.why-item p{font-size:13.5px;color:var(--muted);line-height:1.65;}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);text-align:center;position:relative;overflow:hidden;}
+.cta::before{content:'';position:absolute;top:-60px;left:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(201,168,76,.15) 0%,transparent 70%);pointer-events:none;}
+.cta h2{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,42px);color:var(--white);margin-bottom:16px;}
+.cta p{color:rgba(255,255,255,.75);font-size:16px;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;}
+
+/* NEWSLETTER */
+.newsletter{background:var(--white);padding:60px 40px;}
+.newsletter-inner{max-width:540px;margin:0 auto;text-align:center;}
+.newsletter h3{font-family:'Playfair Display',serif;font-size:24px;color:var(--navy);margin-bottom:10px;}
+.newsletter p{color:var(--muted);font-size:14px;margin-bottom:24px;}
+.newsletter-form{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.newsletter-form input{flex:1;min-width:200px;padding:12px 16px;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;}
+.newsletter-form input:focus{border-color:var(--navy);}
+.newsletter-form button{background:var(--navy);color:var(--white);border:none;padding:12px 24px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;}
+.newsletter-form button:hover{background:var(--navy2);}
+#nl-msg{margin-top:12px;font-size:13px;}
+
+/* FOOTER */
+footer{background:var(--navy2);color:rgba(255,255,255,.75);padding:48px 40px 28px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;max-width:1100px;margin:0 auto 36px;}
+.footer-brand .logo{font-size:18px;margin-bottom:12px;display:block;}
+.footer-brand p{font-size:13.5px;line-height:1.7;max-width:280px;}
+.footer-col h4{color:var(--gold);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+.footer-col a{display:block;color:rgba(255,255,255,.65);text-decoration:none;font-size:13.5px;margin-bottom:8px;transition:color .2s;}
+.footer-col a:hover{color:var(--gold);}
+.footer-bottom{text-align:center;font-size:12px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);max-width:1100px;margin:0 auto;}
+
+/* CHAT WIDGET */
+.chat-widget{position:fixed;bottom:28px;right:28px;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:12px;}
+.chat-btn{width:60px;height:60px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 24px rgba(10,61,98,.45);border:none;font-size:24px;transition:transform .25s,background .2s,box-shadow .25s;color:var(--gold);position:relative;flex-shrink:0;}
+.chat-btn:hover{transform:scale(1.10);background:var(--navy2);box-shadow:0 10px 32px rgba(10,61,98,.55);}
+.chat-btn::before{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(201,168,76,.5);animation:chatPulse 2.4s ease-out infinite;}
+.chat-badge{position:absolute;top:-3px;right:-3px;width:18px;height:18px;background:#e74c3c;border-radius:50%;border:2px solid var(--white);font-size:10px;color:var(--white);font-weight:700;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+.chat-badge.show{opacity:1;transform:scale(1);}
+.chat-box{width:340px;background:var(--white);border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,.22);overflow:hidden;display:none;flex-direction:column;transform-origin:bottom right;animation:chatOpen .22s cubic-bezier(.34,1.56,.64,1) both;}
+.chat-box.open{display:flex;}
+.chat-head{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);color:var(--white);padding:16px 18px;display:flex;align-items:center;gap:12px;}
+.chat-avatar{width:40px;height:40px;background:rgba(201,168,76,.2);border:1.5px solid rgba(201,168,76,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.chat-head-info{flex:1;}
+.chat-head-info h4{font-size:14px;font-weight:600;letter-spacing:.2px;}
+.chat-head-info p{font-size:11px;opacity:.6;margin-top:2px;}
+.chat-status{display:flex;align-items:center;gap:5px;font-size:11px;opacity:.75;}
+.chat-status::before{content:'';width:7px;height:7px;background:#2ecc71;border-radius:50%;box-shadow:0 0 0 2px rgba(46,204,113,.3);animation:statusPulse 2s ease infinite;}
+.chat-close{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:18px;padding:0 0 0 8px;transition:color .15s;line-height:1;}
+.chat-close:hover{color:var(--white);}
+.chat-messages{padding:14px;flex:1;max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#f9f9fb;scroll-behavior:smooth;}
+.chat-messages::-webkit-scrollbar{width:4px;}
+.chat-messages::-webkit-scrollbar-track{background:transparent;}
+.chat-messages::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px;}
+.msg{max-width:88%;padding:10px 13px;border-radius:14px;font-size:13px;line-height:1.55;white-space:pre-line;animation:msgIn .18s ease both;}
+.msg.bot{background:var(--white);color:var(--text);border:1px solid #ebebeb;align-self:flex-start;border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.msg.user{background:var(--navy);color:var(--white);align-self:flex-end;border-bottom-right-radius:4px;}
+.typing-dots{display:flex;gap:4px;align-items:center;padding:12px 16px;}
+.typing-dots span{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:typingBounce .9s ease infinite;}
+.typing-dots span:nth-child(2){animation-delay:.18s;}
+.typing-dots span:nth-child(3){animation-delay:.36s;}
+.msg.error-msg{background:#fff2f2;border-color:#ffd0d0;color:#c0392b;}
+.chat-input{display:flex;padding:10px 12px;border-top:1px solid #ebebeb;gap:8px;background:var(--white);align-items:center;}
+.chat-input input{flex:1;border:1.5px solid #e5e7eb;border-radius:20px;padding:9px 14px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;background:#fafafa;}
+.chat-input input:focus{border-color:var(--navy);background:var(--white);}
+.chat-input input:disabled{opacity:.6;cursor:not-allowed;}
+.chat-send{background:var(--navy);border:none;color:var(--gold);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s;flex-shrink:0;}
+.chat-send:hover{background:var(--navy2);transform:scale(1.08);}
+.chat-send:disabled{background:#ccc;color:#999;cursor:not-allowed;transform:none;}
+.quick-replies{display:flex;flex-wrap:wrap;gap:6px;padding:8px 14px 2px;background:#f9f9fb;}
+.quick-reply{background:var(--white);border:1.5px solid var(--navy);color:var(--navy);border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;}
+.quick-reply:hover{background:var(--navy);color:var(--white);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes chatPulse{0%{transform:scale(1);opacity:.6}70%{transform:scale(1.5);opacity:0}100%{transform:scale(1.5);opacity:0}}
+@keyframes chatOpen{from{opacity:0;transform:scale(.88) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+@keyframes statusPulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+@media(max-width:768px){
+  header{padding:14px 18px;flex-direction:column;gap:12px;}
+  nav a{padding:7px 10px;font-size:13px;}
+  section{padding:60px 18px;}
+  .stats-bar{grid-template-columns:repeat(2,1fr);}
+  .footer-grid{grid-template-columns:1fr;}
+  .chat-box{width:300px;}
+  .chat-widget{bottom:18px;right:16px;}
+}
+</style>
+<link rel="stylesheet" href="/site.css">
+</head>
+<body class="home">
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="/" class="logo">PRIME<em>WAVE</em></a>
+  <nav class="site-nav" id="siteNav" aria-label="Main">
+    <a href="/">Home</a>
+    <a href="/rooms.html">Rooms</a>
+    <a href="/about.html">About</a>
+    <a href="/services.html">Services</a>
+    <a href="/news.html">News</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/book.html" class="nav-book">Book Now</a>
+    <a href="/login.html" class="nav-acct" id="navAcct"><span class="av"></span><span class="lb">Sign in</span></a>
+  </nav>
+  <button class="ham" id="siteHam" aria-label="Menu" aria-expanded="false" aria-controls="siteNav">☰</button>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ Nairobi's Premier Stay</div>
+    <h1>Where Comfort Meets <em>Elegance</em></h1>
+    <p>Experience personalised luxury hospitality in the heart of Nairobi. Book your stay and arrive to perfection.</p>
+    <div class="hero-btns">
+      <a href="/rooms.html" class="btn-primary">Reserve a Room</a>
+      <a href="/rooms.html" class="btn-outline">View Rooms</a>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Room Types</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Reception</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Secure Booking</div></div>
+  <div class="stat"><div class="stat-num" id="stat-guests">—</div><div class="stat-label">Happy Guests</div></div>
+</div>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-header">
+    <div class="section-tag">What We Offer</div>
+    <h2>A Complete Hospitality Experience</h2>
+    <p>Every detail is designed for your comfort, from arrival to checkout.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80" alt="Luxury Rooms">
+      <div class="feature-body"><h3>Luxury Rooms</h3><p>Spacious, modern rooms with premium bedding, en-suite bathrooms and beautiful city views.</p></div>
+    </div>
+    <div class="feature-card">
+      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" alt="Restaurant">
+      <div class="feature-body"><h3>Table Reservations</h3><p>Book tables for business meetings, romantic dinners or celebrations in our in-house restaurant.</p></div>
+    </div>
+    <div class="feature-card">
+      <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80" alt="Reception">
+      <div class="feature-body"><h3>24/7 Reception</h3><p>Our dedicated team is always on hand to assist with anything you need, day or night.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROOMS PREVIEW -->
+<section class="rooms-section">
+  <div class="section-header">
+    <div class="section-tag">Our Rooms</div>
+    <h2>Find Your Perfect Room</h2>
+    <p>From cozy deluxe rooms to VIP suites — all with instant availability checking.</p>
+  </div>
+  <div id="rooms-loading"><div class="spinner-ring"></div><p>Loading rooms…</p></div>
+  <div class="rooms-grid" id="rooms-grid" style="display:none"></div>
+  <div style="text-align:center"><a href="/rooms.html" class="btn-primary">View All Rooms &amp; Availability</a></div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="why">
+  <div class="section-header">
+    <div class="section-tag">Why PrimeWave</div>
+    <h2>Everything You'd Expect — and More</h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-item"><div class="why-icon">⚡</div><h3>Instant Confirmation</h3><p>Bookings confirmed in seconds with a booking ID sent straight to your email.</p></div>
+    <div class="why-item"><div class="why-icon">🔒</div><h3>Secure Payments</h3><p>Pay safely via M-Pesa or card through PesaPal. Your data is fully encrypted.</p></div>
+    <div class="why-item"><div class="why-icon">📄</div><h3>PDF Receipts</h3><p>Official VAT receipts emailed to you automatically after every successful payment.</p></div>
+    <div class="why-item"><div class="why-icon">🌟</div><h3>Affordable Luxury</h3><p>Premium service starting from KES 5,000/night — perfect for business and leisure.</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="section-tag" style="border:1px solid rgba(201,168,76,.4);color:var(--gold)">Ready to Stay?</div>
+  <h2>Reserve Your Room Today</h2>
+  <p>Instant booking, secure payment, and a PDF receipt delivered to your inbox.</p>
+  <a href="/rooms.html" class="btn-primary">Book Now</a>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="newsletter-inner">
+    <h3>Stay in the Loop</h3>
+    <p>Subscribe for exclusive offers, seasonal packages and hotel news.</p>
+    <div class="newsletter-form">
+      <input type="text"  id="nl-name"  placeholder="Your name">
+      <input type="email" id="nl-email" placeholder="Your email address">
+      <button onclick="doSubscribe()">Subscribe</button>
+    </div>
+    <div id="nl-msg"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<section class="home-news" id="latestNews" hidden>
+  <div class="s-wrap"><div class="s-title"><h2>Latest News</h2><p>Offers, events and updates from PrimeWave</p></div>
+  <div class="news-grid" id="homeNews"></div><div class="n-more"><a class="s-btn" href="/news.html">All news</a></div></div>
+</section>
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="logo">PRIME<span>WAVE</span></a>
+      <p>Luxury hospitality in the heart of Nairobi, Kenya. Comfort, elegance and personalised service — every stay.</p>
+    <div class="social" data-social></div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="/">Home</a><a href="/rooms.html">Rooms</a><a href="/book.html">Book Now</a><a href="/services.html">Services</a><a href="/news.html">News</a><a href="/about.html">About Us</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="mailto:zephanjuma@gmail.com">zephanjuma@gmail.com</a>
+      <a href="tel:+254115028591">+254 115 028 591</a>
+      <a href="/contact.html">Nairobi, Kenya</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 PrimeWave Hotel | Nairobi, Kenya | All Rights Reserved</div>
+</footer>
+
+<!-- AI CHAT WIDGET -->
+<div class="chat-widget">
+  <div class="chat-box" id="chatBox">
+    <div class="chat-head">
+      <div class="chat-avatar">✦</div>
+      <div class="chat-head-info">
+        <h4>PrimeWave</h4>
+        <div class="chat-status">Online now</div>
+      </div>
+      <button class="chat-close" onclick="closeChat()" aria-label="Close chat">✕</button>
+    </div>
+
+    <div class="quick-replies" id="quickReplies">
+      <button class="quick-reply" onclick="sendQuick('What rooms are available?')">🛏 Rooms</button>
+      <button class="quick-reply" onclick="sendQuick('What are your room prices?')">💰 Prices</button>
+      <button class="quick-reply" onclick="sendQuick('What is the check-in time?')">🕑 Check-in</button>
+      <button class="quick-reply" onclick="sendQuick('How do I make a booking?')">📋 Book</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">Hello! 👋 Welcome to <strong>PrimeWave Hotel</strong>.<br><br>I'm PRIMEWAVE CHAT ASSISTANT, your virtual concierge. Ask me about rooms, prices, availability, directions, or anything else I can help with!</div>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" id="chatInput"
+             placeholder="Ask me anything…"
+             autocomplete="off"
+             onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}">
+      <button class="chat-send" id="chatSendBtn" onclick="sendChat()" aria-label="Send">➤</button>
+    </div>
+  </div>
+
+  <button class="chat-btn" id="chatToggleBtn" onclick="toggleChat()" aria-label="Open chat assistant">
+    💬
+    <span class="chat-badge" id="chatBadge">1</span>
+  </button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  PRIMEWAVE HOTEL — Homepage Script
+//  Node/Express backend (replaces the old Google Apps Script
+//  SCRIPT_URL + google.script.run calls).
+//
+//  In dev (VS Code + XAMPP): XAMPP only serves MySQL — the
+//  Express server itself runs separately, e.g. `node server.js`
+//  on http://localhost:3000. This page can be served by that
+//  same Express app as a static file, so a *relative* API_BASE
+//  ("/api") works both locally and once deployed — no more
+//  hardcoded deployment URLs like the old SCRIPT_URL.
+// ════════════════════════════════════════════════════════════
+
+const API_BASE = "/api";
+
+// ── Generic POST to the API ──────────────────────────────────
+async function apiPost(path, payload) {
+  const response = await fetch(API_BASE + path, {
+    method:  "POST",
+    headers: { "Content-Type": "application/json" },
+    body:    JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error("HTTP " + response.status + " from server.");
+  }
+
+  return response.json();
+}
+
+// ── Generic GET to the API ───────────────────────────────────
+async function apiGet(path, params = {}) {
+  const qs  = new URLSearchParams(params).toString();
+  const res = await fetch(API_BASE + path + (qs ? "?" + qs : ""));
+
+  if (!res.ok) {
+    throw new Error("HTTP " + res.status + " from server.");
+  }
+
+  return res.json();
+}
+
+// ════════════════════════════════════════════════════════════
+//  ROOMS — load first 3 for homepage preview
+//  Old: apiGet({action:"getRooms"}) against GAS
+//  New: GET /api/rooms
+// ════════════════════════════════════════════════════════════
+async function loadRoomsHome() {
+  const loading = document.getElementById("rooms-loading");
+  const grid    = document.getElementById("rooms-grid");
+  if (!loading || !grid) return;
+
+  try {
+    const data = await apiGet("/rooms");
+
+    loading.style.display = "none";
+
+    const rooms = data.data || [];
+    if (!rooms.length) {
+      grid.innerHTML     = "<p style='text-align:center;color:#888;padding:30px'>No rooms available right now.</p>";
+      grid.style.display = "block";
+      return;
+    }
+
+    grid.innerHTML = "";
+    rooms.slice(0, 3).forEach(room => {
+      const img = room.image_url || "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600";
+      grid.innerHTML += `
+        <div class="room-card">
+          <img src="${esc(img)}" alt="Room ${esc(room.room_number)}" loading="lazy"
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600'">
+          <div class="room-info">
+            <div class="room-type">${esc(room.room_type)}</div>
+            <h3>Room ${esc(room.room_number)}</h3>
+            <p>${esc(room.description || "Comfortable room with modern amenities.")}</p>
+            <div class="room-price">
+              <div class="price-tag">KES ${Number(room.price_per_night).toLocaleString()} <span>/ night</span></div>
+              <a href="/rooms.html" class="btn-sm">Book</a>
+            </div>
+          </div>
+        </div>`;
+    });
+
+    grid.style.display = "grid";
+
+    const statEl = document.getElementById("stat-guests");
+    if (statEl) statEl.textContent = (rooms.length * 47 + 312) + "+";
+
+  } catch (err) {
+    console.error("[Rooms]", err);
+    if (loading) loading.innerHTML = "<p style='color:#888;padding:20px'>Could not load rooms — please refresh.</p>";
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  NEWSLETTER
+//  Old: apiPost({action:"subscribe", name, email}) against GAS
+//  New: POST /api/subscribe
+// ════════════════════════════════════════════════════════════
+async function doSubscribe() {
+  const name  = (document.getElementById("nl-name")?.value  || "").trim();
+  const email = (document.getElementById("nl-email")?.value || "").trim();
+  const msg   = document.getElementById("nl-msg");
+
+  if (!email || !email.includes("@")) {
+    msg.innerHTML = "<span style='color:red'>Please enter a valid email address.</span>";
+    return;
+  }
+
+  msg.innerHTML = "Subscribing…";
+
+  try {
+    const data = await apiPost("/subscribe", { name, email });
+    msg.innerHTML = data.status === "success"
+      ? "<span style='color:green'>✔ Subscribed! Thank you.</span>"
+      : "<span style='color:red'>" + esc(data.message || "Could not subscribe.") + "</span>";
+  } catch (e) {
+    console.error("[Newsletter]", e);
+    msg.innerHTML = "<span style='color:red'>Could not subscribe right now — please try again.</span>";
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  CHAT WIDGET
+//  Old: apiPost({action:"chatAssistant", message, history}) against GAS
+//  New: POST /api/chat
+// ════════════════════════════════════════════════════════════
+
+let chatOpen       = false;
+let chatBusy       = false;
+let chatHistory    = [];   // [{role:"user"|"assistant", content:"..."}]
+let userHasChatted = false;
+
+function toggleChat() {
+  chatOpen ? closeChat() : openChat();
+}
+
+function openChat() {
+  chatOpen = true;
+  document.getElementById("chatBox").classList.add("open");
+  document.getElementById("chatToggleBtn").innerHTML = '✕<span class="chat-badge" id="chatBadge"></span>';
+
+  const badge = document.getElementById("chatBadge");
+  if (badge) badge.classList.remove("show");
+
+  setTimeout(() => document.getElementById("chatInput")?.focus(), 120);
+}
+
+function closeChat() {
+  chatOpen = false;
+  document.getElementById("chatBox").classList.remove("open");
+  document.getElementById("chatToggleBtn").innerHTML = '💬<span class="chat-badge" id="chatBadge"></span>';
+}
+
+function sendQuick(text) {
+  const qr = document.getElementById("quickReplies");
+  if (qr) qr.style.display = "none";
+
+  document.getElementById("chatInput").value = text;
+  sendChat();
+}
+
+async function sendChat() {
+  if (chatBusy) return;
+
+  const input = document.getElementById("chatInput");
+  const text  = (input.value || "").trim();
+  if (!text) return;
+
+  if (!userHasChatted) {
+    const qr = document.getElementById("quickReplies");
+    if (qr) qr.style.display = "none";
+    userHasChatted = true;
+  }
+
+  input.value = "";
+  input.disabled = true;
+
+  const sendBtn = document.getElementById("chatSendBtn");
+  if (sendBtn) sendBtn.disabled = true;
+
+  chatBusy = true;
+
+  addMessage(text, "user");
+
+  chatHistory.push({ role: "user", content: text });
+  if (chatHistory.length > 16) chatHistory = chatHistory.slice(-16);
+
+  const typingId = showTyping();
+
+  try {
+    const data = await apiPost("/chat", {
+      message: text,
+      history: chatHistory.slice(-8),
+    });
+
+    removeMsg(typingId);
+
+    const reply = data.reply || "I didn't get a response. Please try again.";
+
+    addMessage(reply, "bot");
+
+    chatHistory.push({ role: "assistant", content: reply });
+    if (chatHistory.length > 16) chatHistory = chatHistory.slice(-16);
+
+    if (!chatOpen) showBadge();
+
+  } catch (err) {
+    removeMsg(typingId);
+    console.error("[Chat]", err);
+    addMessage("Connection error — please check your internet and try again.", "bot error-msg");
+  }
+
+  chatBusy = false;
+  input.disabled = false;
+  if (sendBtn) sendBtn.disabled = false;
+  input.focus();
+}
+
+function addMessage(text, cssClass) {
+  const wrap = document.getElementById("chatMessages");
+  if (!wrap) return;
+
+  const div = document.createElement("div");
+  div.className = "msg " + cssClass;
+
+  div.innerHTML = text
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\n/g, "<br>");
+
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  return div;
+}
+
+function showTyping() {
+  const wrap = document.getElementById("chatMessages");
+  const id   = "typing-" + Date.now();
+
+  const div = document.createElement("div");
+  div.id        = id;
+  div.className = "msg bot";
+  div.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  return id;
+}
+
+function removeMsg(id) {
+  document.getElementById(id)?.remove();
+}
+
+function showBadge() {
+  const badge = document.getElementById("chatBadge");
+  if (badge) { badge.textContent = "1"; badge.classList.add("show"); }
+}
+
+function esc(str) {
+  return String(str || "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadRoomsHome();
+
+  setTimeout(() => {
+    if (!chatOpen) showBadge();
+  }, 3000);
+
+  document.addEventListener("click", (e) => {
+    const widget = document.querySelector(".chat-widget");
+    if (chatOpen && widget && !widget.contains(e.target)) {
+      closeChat();
+    }
+  });
+});
+</script>
+<script src="/site.js"></script>
+<script src="/news.js"></script>
+<script src="/social.js"></script>
+<script>PWNews.mountLatest("homeNews","latestNews",3);</script>
+</body>
+</html>

@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rooms & Rates | PrimeWave Hotel</title>
+<meta name="description" content="Browse PrimeWave Hotel rooms. Check live availability and book instantly with M-Pesa or card.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════
+   TOKENS — matches server config / index.html exactly
+════════════════════════════════════════════════════ */
+:root{
+  --navy:#0a3d62;--navy2:#08304d;--navy3:#062638;
+  --gold:#c9a84c;--gold2:#e8c96d;
+  --green:#27ae60;
+  --light:#f7f5f0;--white:#fff;
+  --text:#2c2c2c;--muted:#6b7280;--border:#e5e7eb;
+  --shadow:0 4px 24px rgba(10,61,98,.12);
+  --shadow-lg:0 8px 40px rgba(10,61,98,.18);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--text);overflow-x:hidden;}
+
+/* HEADER */
+header{
+  background:var(--navy);padding:16px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:200;
+  box-shadow:0 2px 20px rgba(0,0,0,.28);
+}
+.logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold);letter-spacing:2px;text-decoration:none;flex-shrink:0;}
+.logo em{color:var(--white);font-style:normal;font-weight:400;}
+.nav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.nav-links a{color:rgba(255,255,255,.82);text-decoration:none;padding:7px 13px;border-radius:4px;font-size:13.5px;font-weight:500;transition:all .18s;}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.1);color:var(--gold);}
+.nav-book{background:var(--gold)!important;color:var(--navy)!important;font-weight:600!important;padding:7px 16px!important;border-radius:4px!important;}
+.nav-book:hover{background:var(--gold2)!important;}
+.nav-user{display:none;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:4px 12px 4px 4px;cursor:pointer;transition:all .18s;}
+.nav-user:hover{background:rgba(255,255,255,.12);}
+.nav-user.visible{display:flex;}
+.nav-av{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;}
+.nav-uname{font-size:12.5px;color:rgba(255,255,255,.85);}
+.ham{display:none;background:none;border:none;color:rgba(255,255,255,.85);font-size:22px;cursor:pointer;padding:4px;line-height:1;}
+.nav-drawer{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--navy3);z-index:300;flex-direction:column;padding:28px 24px;gap:6px;}
+.nav-drawer.open{display:flex;}
+.drawer-close{align-self:flex-end;background:none;border:none;color:rgba(255,255,255,.6);font-size:24px;cursor:pointer;margin-bottom:12px;}
+.nav-drawer a{color:rgba(255,255,255,.8);text-decoration:none;padding:13px 16px;border-radius:8px;font-size:15px;font-weight:500;transition:all .16s;}
+.nav-drawer a:hover{background:rgba(255,255,255,.07);color:var(--gold);}
+.nav-drawer .nav-book{background:var(--gold)!important;color:var(--navy)!important;margin-top:8px;text-align:center;}
+
+/* PAGE HERO */
+.page-hero{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  padding:64px 40px 56px;text-align:center;position:relative;overflow:hidden;
+}
+.page-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(201,168,76,.15) 0%,transparent 70%);pointer-events:none;}
+.page-hero::after{content:'';position:absolute;bottom:-60px;left:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(201,168,76,.08) 0%,transparent 70%);pointer-events:none;}
+.hero-tag{display:inline-block;border:1px solid rgba(201,168,76,.5);color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:5px 16px;border-radius:20px;margin-bottom:18px;position:relative;z-index:1;}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,50px);color:var(--white);margin-bottom:12px;position:relative;z-index:1;}
+.page-hero p{color:rgba(255,255,255,.72);font-size:15px;max-width:480px;margin:0 auto;line-height:1.7;position:relative;z-index:1;}
+
+/* FILTERS BAR */
+.filters-bar{
+  background:var(--white);padding:22px 40px;
+  box-shadow:0 2px 12px rgba(0,0,0,.07);
+  display:flex;gap:14px;flex-wrap:wrap;
+  align-items:flex-end;justify-content:center;
+}
+.filter-group{display:flex;flex-direction:column;gap:5px;}
+.filter-group label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:500;}
+.filter-group select,.filter-group input{
+  padding:9px 14px;border:1.5px solid var(--border);border-radius:6px;
+  font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--text);
+  background:var(--white);outline:none;min-width:140px;transition:border-color .18s;
+}
+.filter-group select:focus,.filter-group input:focus{border-color:var(--navy);}
+.filter-btn{
+  background:var(--navy);color:var(--white);border:none;
+  padding:10px 22px;border-radius:6px;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;margin-top:auto;
+}
+.filter-btn:hover{background:var(--navy2);}
+.clear-btn{
+  background:transparent;color:var(--muted);border:1.5px solid var(--border);
+  padding:10px 18px;border-radius:6px;font-family:'DM Sans',sans-serif;
+  font-size:13px;cursor:pointer;margin-top:auto;transition:all .18s;
+}
+.clear-btn:hover{border-color:var(--navy);color:var(--navy);}
+
+/* MAIN CONTENT */
+.main{padding:48px 40px 100px;max-width:1200px;margin:0 auto;}
+.results-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:28px;font-size:14px;color:var(--muted);
+  flex-wrap:wrap;gap:8px;
+}
+#result-count{font-weight:600;color:var(--navy);}
+.legend{font-size:12px;display:flex;align-items:center;gap:14px;}
+.legend span{display:flex;align-items:center;gap:5px;}
+
+/* ROOM CARDS */
+.rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px;}
+.room-card{
+  background:var(--white);border-radius:12px;overflow:hidden;
+  box-shadow:var(--shadow);transition:transform .3s,box-shadow .3s;
+  animation:fadeUp .5s ease both;
+}
+.room-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+.room-img-wrap{position:relative;}
+.room-img-wrap img{width:100%;height:230px;object-fit:cover;display:block;}
+.room-badge{
+  position:absolute;top:14px;left:14px;
+  background:var(--navy);color:var(--gold);
+  font-size:10px;font-weight:600;letter-spacing:1.5px;
+  text-transform:uppercase;padding:4px 12px;border-radius:20px;
+}
+.status-pill{
+  position:absolute;top:14px;right:14px;
+  font-size:10.5px;font-weight:600;letter-spacing:.5px;
+  text-transform:uppercase;padding:4px 10px;border-radius:20px;
+  display:flex;align-items:center;gap:4px;
+}
+.status-pill.available{background:rgba(39,174,96,.9);color:#fff;}
+.status-pill.occupied{background:rgba(231,76,60,.9);color:#fff;}
+.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+
+.room-body{padding:24px;}
+.room-type-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px;}
+.room-body h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--navy);margin-bottom:8px;}
+.room-desc{font-size:13.5px;color:var(--muted);line-height:1.65;margin-bottom:16px;}
+.room-amenities{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;}
+.amenity{font-size:11px;background:var(--light);color:var(--navy);padding:4px 10px;border-radius:20px;font-weight:500;}
+
+.room-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid #f0f0f0;}
+.price-block .price{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);font-weight:700;}
+.price-block .per{font-size:12px;color:var(--muted);}
+.room-actions{display:flex;gap:8px;}
+.btn-check{
+  background:transparent;border:1.5px solid var(--navy);color:var(--navy);
+  padding:9px 14px;border-radius:5px;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;
+}
+.btn-check:hover{background:var(--navy);color:var(--white);}
+.btn-book{
+  background:var(--gold);border:none;color:var(--navy);
+  padding:9px 16px;border-radius:5px;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;
+  display:inline-block;transition:background .2s;
+}
+.btn-book:hover{background:var(--gold2);}
+.avail-result{
+  margin-top:12px;font-size:13px;font-weight:500;
+  padding:9px 13px;border-radius:6px;display:none;
+  line-height:1.5;
+}
+.avail-result.available{background:#eafaf1;color:#1a7a44;display:block;border-left:3px solid var(--green);}
+.avail-result.taken{background:#fdedec;color:#a93226;display:block;border-left:3px solid #e74c3c;}
+.avail-result.checking{background:#fef9e7;color:#d68910;display:block;border-left:3px solid #f39c12;}
+
+/* LOADING / EMPTY STATES */
+#rooms-loading{text-align:center;padding:70px 20px;color:var(--muted);}
+.spinner{width:38px;height:38px;border:3px solid #eee;border-top-color:var(--navy);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto 16px;}
+#no-results{text-align:center;padding:70px 20px;color:var(--muted);display:none;}
+.empty-ico{font-size:48px;margin-bottom:14px;}
+
+/* DATE AVAILABILITY MODAL */
+.date-modal{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.52);z-index:400;
+  align-items:center;justify-content:center;
+}
+.date-modal.open{display:flex;}
+.date-modal-box{
+  background:var(--white);border-radius:14px;padding:34px;
+  width:360px;max-width:90vw;
+  box-shadow:0 12px 48px rgba(0,0,0,.28);
+  animation:fadeUp .25s ease;
+}
+.date-modal-box h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--navy);margin-bottom:22px;}
+.dm-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);display:block;margin-bottom:6px;font-weight:500;}
+.dm-input{
+  width:100%;padding:10px 13px;
+  border:1.5px solid var(--border);border-radius:6px;
+  font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;margin-bottom:16px;transition:border-color .18s;
+}
+.dm-input:focus{border-color:var(--navy);}
+.modal-btns{display:flex;gap:10px;margin-top:6px;}
+.modal-confirm{
+  flex:1;background:var(--navy);color:var(--white);border:none;
+  padding:12px;border-radius:6px;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;
+}
+.modal-confirm:hover{background:var(--navy2);}
+.modal-cancel{
+  background:transparent;color:var(--muted);border:1.5px solid var(--border);
+  padding:12px 18px;border-radius:6px;font-family:'DM Sans',sans-serif;
+  font-size:14px;cursor:pointer;transition:all .18s;
+}
+.modal-cancel:hover{border-color:var(--navy);color:var(--navy);}
+
+/* CHAT WIDGET */
+.chat-widget{position:fixed;bottom:26px;right:26px;z-index:500;display:flex;flex-direction:column;align-items:flex-end;gap:12px;}
+.chat-btn{width:58px;height:58px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-size:22px;color:var(--gold);box-shadow:0 6px 24px rgba(10,61,98,.4);transition:transform .2s,background .2s;position:relative;}
+.chat-btn:hover{transform:scale(1.08);background:var(--navy2);}
+.chat-dot{position:absolute;top:3px;right:3px;width:12px;height:12px;border-radius:50%;background:#e74c3c;border:2.5px solid var(--light);display:none;}
+.chat-dot.show{display:block;animation:pulse-dot 2s infinite;}
+@keyframes pulse-dot{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.chat-box{width:340px;background:var(--white);border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.06);overflow:hidden;display:none;flex-direction:column;border:1px solid rgba(0,0,0,.07);}
+.chat-box.open{display:flex;animation:fadeUp .22s ease;}
+.chat-head{background:var(--navy);color:var(--white);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.ch-av-wrap{position:relative;flex-shrink:0;}
+.ch-av{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.ch-online{position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#2ecc71;border:2px solid var(--navy);}
+.ch-info{flex:1;min-width:0;}
+.ch-info h4{font-size:13.5px;font-weight:600;}
+.ch-info p{font-size:11px;opacity:.6;margin-top:2px;}
+.ch-close{background:none;border:none;color:rgba(255,255,255,.45);font-size:18px;cursor:pointer;line-height:1;padding:2px;transition:color .15s;flex-shrink:0;}
+.ch-close:hover{color:var(--white);}
+.chat-msgs{padding:14px 14px 8px;flex:1;max-height:290px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#f8f8f8;scroll-behavior:smooth;}
+.chat-msgs::-webkit-scrollbar{width:3px;}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.msg-group{display:flex;flex-direction:column;gap:2px;}
+.msg-group.user{align-items:flex-end;}
+.msg-group.bot{align-items:flex-start;}
+.msg-row{display:flex;align-items:flex-end;gap:6px;}
+.msg-group.user .msg-row{flex-direction:row-reverse;}
+.bot-av{width:24px;height:24px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.msg{max-width:86%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.55;white-space:pre-line;word-break:break-word;}
+.msg.bot{background:var(--white);color:var(--text);border:1px solid #eee;border-radius:4px 14px 14px 14px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.msg.user{background:var(--navy);color:var(--white);border-radius:14px 4px 14px 14px;}
+.msg.typing{background:var(--white);border:1px solid #eee;border-radius:4px 14px 14px 14px;padding:11px 15px;}
+.msg.typing span{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin:0 1.5px;animation:tdot 1.3s infinite ease-in-out;}
+.msg.typing span:nth-child(2){animation-delay:.16s;}
+.msg.typing span:nth-child(3){animation-delay:.32s;}
+@keyframes tdot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-5px);opacity:1}}
+.msg-time{font-size:10px;color:var(--muted);padding:0 3px;margin-top:1px;}
+.quick-chips{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px 8px;background:#f8f8f8;border-top:1px solid #f0f0f0;}
+.chip{font-size:11.5px;color:var(--navy);background:var(--white);border:1px solid rgba(10,61,98,.18);border-radius:20px;padding:5px 11px;cursor:pointer;transition:all .15s;white-space:nowrap;font-weight:500;}
+.chip:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
+.chat-inp-area{padding:10px 12px;border-top:1px solid #f0f0f0;background:var(--white);display:flex;align-items:flex-end;gap:8px;flex-shrink:0;}
+.chat-inp-field{flex:1;border:1.5px solid var(--border);border-radius:22px;padding:9px 14px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .16s;resize:none;max-height:80px;line-height:1.4;background:#fafafa;}
+.chat-inp-field:focus{border-color:var(--navy);background:var(--white);}
+.chat-send{background:var(--navy);border:none;color:var(--gold);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .16s,transform .15s;flex-shrink:0;}
+.chat-send:hover{background:var(--navy2);transform:scale(1.08);}
+.chat-send:disabled{background:var(--border);color:var(--muted);transform:none;cursor:not-allowed;}
+.chat-powered{text-align:center;font-size:10px;color:var(--muted);padding:5px 12px 8px;letter-spacing:.3px;background:var(--white);}
+.chat-powered span{color:var(--gold);font-weight:500;}
+
+/* FOOTER */
+footer{background:var(--navy2);color:rgba(255,255,255,.7);padding:52px 40px 28px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;max-width:1100px;margin:0 auto 36px;}
+.footer-brand .logo{font-size:18px;margin-bottom:12px;display:block;}
+.footer-brand p{font-size:13px;line-height:1.75;max-width:280px;color:rgba(255,255,255,.6);}
+.fc h4{color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.fc a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;margin-bottom:7px;transition:color .16s;}
+.fc a:hover{color:var(--gold);}
+.footer-bottom{text-align:center;font-size:12px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.35);max-width:1100px;margin:0 auto;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:860px){
+  .nav-links{display:none;}
+  .ham{display:block;}
+  header{padding:14px 18px;}
+  .filters-bar{padding:18px 16px;}
+  .main{padding:32px 16px 80px;}
+  .footer-grid{grid-template-columns:1fr;}
+  .chat-box{width:300px;}
+}
+@media(max-width:480px){
+  .chat-box{width:calc(100vw - 32px);}
+  .rooms-grid{grid-template-columns:1fr;}
+  .page-hero{padding:48px 20px 40px;}
+}
+</style>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PrimeWave Hotel">
+<meta property="og:title" content="Rooms & Rates | PrimeWave Hotel">
+<meta property="og:description" content="Browse PrimeWave Hotel's rooms in Nairobi, compare rates and check live availability before you book.">
+<meta name="theme-color" content="#0a3d62">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="/" class="logo">PRIME<em>WAVE</em></a>
+  <nav class="site-nav" id="siteNav" aria-label="Main">
+    <a href="/">Home</a>
+    <a href="/rooms.html">Rooms</a>
+    <a href="/about.html">About</a>
+    <a href="/services.html">Services</a>
+    <a href="/news.html">News</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/book.html" class="nav-book">Book Now</a>
+    <a href="/login.html" class="nav-acct" id="navAcct"><span class="av"></span><span class="lb">Sign in</span></a>
+  </nav>
+  <button class="ham" id="siteHam" aria-label="Menu" aria-expanded="false" aria-controls="siteNav">☰</button>
+</header>
+
+
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="hero-tag">Accommodation</div>
+  <h1>Our Rooms &amp; Suites</h1>
+  <p>Choose from our selection of luxury rooms — check live availability and book instantly.</p>
+</div>
+
+<!-- FILTERS BAR — params match GET /api/rooms: type | minPrice | maxPrice | guests | ac -->
+<div class="filters-bar">
+  <div class="filter-group">
+    <label>Room Type</label>
+    <select id="f-type">
+      <option value="">All Types</option>
+      <option value="Deluxe">Deluxe</option>
+      <option value="Executive">Executive</option>
+      <option value="VIP Suite">VIP Suite</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Min Price (KES)</label>
+    <input type="number" id="f-min" placeholder="0" min="0" step="500">
+  </div>
+  <div class="filter-group">
+    <label>Max Price (KES)</label>
+    <input type="number" id="f-max" placeholder="Any" min="0" step="500">
+  </div>
+  <div class="filter-group">
+    <label>Guests</label>
+    <input type="number" id="f-guests" placeholder="1+" min="1" max="10">
+  </div>
+  <div class="filter-group">
+    <label>Air Conditioning</label>
+    <select id="f-ac">
+      <option value="">Any</option>
+      <option value="true">With AC</option>
+      <option value="false">Without AC</option>
+    </select>
+  </div>
+  <button class="filter-btn" onclick="applyFilters()">Search Rooms</button>
+  <button class="clear-btn"  onclick="clearFilters()">Clear</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="results-bar">
+    <span id="result-count">Loading rooms…</span>
+    <span class="legend">
+      <span>🟢 Available</span>
+      <span>🔴 Occupied</span>
+    </span>
+  </div>
+
+  <div id="rooms-loading">
+    <div class="spinner"></div>
+    <p>Fetching rooms from the database…</p>
+  </div>
+
+  <div id="no-results">
+    <div class="empty-ico">🛏️</div>
+    <p style="font-size:16px;font-weight:600;color:var(--navy);margin-bottom:8px">No rooms match your filters.</p>
+    <p style="font-size:13px">Try adjusting your search criteria or <a href="#" onclick="clearFilters();return false;" style="color:var(--gold)">clear all filters</a>.</p>
+  </div>
+
+  <div class="rooms-grid" id="rooms-grid"></div>
+</div>
+
+<!-- DATE AVAILABILITY MODAL — GET /api/availability?room_id&checkin&checkout -->
+<div class="date-modal" id="dateModal">
+  <div class="date-modal-box">
+    <h3>Check Availability</h3>
+    <label class="dm-label">Check-in Date</label>
+    <input type="date" class="dm-input" id="modal-checkin">
+    <label class="dm-label">Check-out Date</label>
+    <input type="date" class="dm-input" id="modal-checkout">
+    <div class="modal-btns">
+      <button class="modal-cancel"  onclick="closeModal()">Cancel</button>
+      <button class="modal-confirm" onclick="confirmCheck()">Check Availability</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="logo">PRIME<em>WAVE</em></a>
+      <p>Luxury hospitality in the heart of Nairobi, Kenya. Comfort, elegance and personalised service — every stay.</p>
+    <div class="social" data-social></div>
+    </div>
+    <div class="fc">
+      <h4>Quick Links</h4>
+      <a href="/">Home</a>
+      <a href="/rooms.html">Rooms</a>
+      <a href="/book.html">Book Now</a>
+      <a href="/services.html">Services</a>
+      <a href="/news.html">News</a>
+      <a href="/about.html">About Us</a>
+    </div>
+    <div class="fc">
+      <h4>Contact</h4>
+      <a href="mailto:zephanjuma@gmail.com">zephanjuma@gmail.com</a>
+      <a href="tel:+254115028591">+254 115 028 591</a>
+      <a href="/contact.html">Nairobi, Kenya</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 PrimeWave Hotel · Nairobi, Kenya · All Rights Reserved</div>
+</footer>
+
+<!-- CHAT WIDGET — Aria · PrimeWave AI Concierge -->
+<div class="chat-widget">
+  <div class="chat-box" id="chatBox">
+    <div class="chat-head">
+      <div class="ch-av-wrap">
+        <div class="ch-av">✦</div>
+        <div class="ch-online"></div>
+      </div>
+      <div class="ch-info">
+        <h4>Aria · PrimeWave Concierge</h4>
+        <p>🟢 Online · Rooms · Tables · Bookings</p>
+      </div>
+      <button class="ch-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="quick-chips" id="quickChips">
+      <span class="chip" onclick="quickSend('What rooms are available?')">Available rooms</span>
+      <span class="chip" onclick="quickSend('What are your prices?')">Room prices</span>
+      <span class="chip" onclick="quickSend('How do I book a room?')">How to book</span>
+      <span class="chip" onclick="quickSend('What time is check-in?')">Check-in time</span>
+      <span class="chip" onclick="quickSend('Do you accept M-Pesa?')">Payment methods</span>
+    </div>
+    <div class="chat-inp-area">
+      <textarea class="chat-inp-field" id="chatInput" placeholder="Ask Aria anything…" rows="1" maxlength="300"></textarea>
+      <button class="chat-send" id="chatSendBtn" onclick="sendChat()">➤</button>
+    </div>
+    <div class="chat-powered">Powered by <span>Aria AI · PrimeWave Hotel</span></div>
+  </div>
+  <button class="chat-btn" onclick="toggleChat()" title="Chat with Aria" aria-label="Open Aria chat assistant">
+    💬
+    <div class="chat-dot" id="chatDot"></div>
+  </button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+//  API BASE — Node/Express backend (replaces GAS_URL +
+//  apiGet/apiPost against Google Apps Script). Same pattern
+//  as index.html: relative path, same origin, no CORS.
+// ════════════════════════════════════════════════════
+const API_BASE = '/api';
+
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+async function apiGet(path, params) {
+  const qs  = params ? '?' + new URLSearchParams(params) : '';
+  const res = await fetch(API_BASE + path + qs);
+  const text = await res.text();
+  try { return JSON.parse(text); }
+  catch(e) { throw new Error('Bad response: ' + text.slice(0, 120)); }
+}
+
+async function apiPost(path, data) {
+  const res  = await fetch(API_BASE + path, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(data),
+  });
+  const text = await res.text();
+  try { return JSON.parse(text); }
+  catch(e) { throw new Error('Bad response: ' + text.slice(0, 120)); }
+}
+
+// ════════════════════════════════════════════════════
+//  AUTH AWARENESS — shows logged-in user in nav
+//  NOTE: this now expects a STANDARD JWT (header.payload.sig,
+//  base64url), issued once Auth.gs's login() is converted to
+//  server/routes/auth.js and signs tokens with the jsonwebtoken
+//  library (see server/middleware/auth.js). The old GAS version
+//  decoded token.split('.')[0] as the payload, which only worked
+//  because GAS's hand-rolled token put the payload first — a real
+//  JWT's payload is segment [1]. Decoding is updated accordingly;
+//  the sessionStorage keys/shape (pw_token / pw_user) are unchanged.
+// ════════════════════════════════════════════════════
+function decodeJwtPayload(token) {
+  const b64url = token.split('.')[1];
+  const b64    = b64url.replace(/-/g, '+').replace(/_/g, '/').padEnd(b64url.length + (4 - b64url.length % 4) % 4, '=');
+  return JSON.parse(atob(b64));
+}
+
+function initAuthNav() { if (window.PWnav) PWnav.refresh(); }
+
+// ════════════════════════════════════════════════════
+//  MOBILE NAV
+// ════════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════════
+//  LOAD ROOMS — GET /api/rooms
+//  Supports filters: type, minPrice, maxPrice, guests, ac
+// ════════════════════════════════════════════════════
+let activeRoomId = null;
+
+async function loadRoomsPage(filters) {
+  filters = filters || {};
+  const loading  = document.getElementById('rooms-loading');
+  const grid     = document.getElementById('rooms-grid');
+  const noResult = document.getElementById('no-results');
+  const counter  = document.getElementById('result-count');
+
+  loading.style.display  = 'block';
+  loading.innerHTML      = '<div class="spinner"></div><p>Fetching rooms from the database…</p>';
+  grid.innerHTML         = '';
+  noResult.style.display = 'none';
+  counter.textContent    = 'Loading rooms…';
+
+  try {
+    const params = {};
+    if (filters.type     && filters.type !== '')     params.type     = filters.type;
+    if (filters.minPrice && filters.minPrice !== '') params.minPrice = filters.minPrice;
+    if (filters.maxPrice && filters.maxPrice !== '') params.maxPrice = filters.maxPrice;
+    if (filters.guests   && filters.guests !== '')   params.guests   = filters.guests;
+    if (filters.ac       && filters.ac !== '')       params.ac       = filters.ac;
+
+    const data  = await apiGet('/rooms', params);
+    const rooms = (data && Array.isArray(data.data)) ? data.data : [];
+
+    loading.style.display = 'none';
+
+    if (!rooms.length) {
+      noResult.style.display = 'block';
+      counter.textContent    = '0 rooms found';
+      return;
+    }
+
+    counter.textContent = rooms.length + ' room' + (rooms.length !== 1 ? 's' : '') + ' found';
+
+    rooms.forEach((room, i) => {
+      const isAvail = room.status === 'available';
+      const img     = room.image_url || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600';
+
+      const tags = [];
+      if (room.has_ac === true || room.has_ac === 1 || room.has_ac === 'true') tags.push('❄️ AC');
+      if (!room.smoking || room.smoking === 0 || room.smoking === 'false')     tags.push('🚭 Non-Smoking');
+      tags.push('👥 Max ' + (room.max_guests || 2) + ' guests');
+      tags.push('📶 Free WiFi');
+      const amenities = tags.map(t => '<span class="amenity">' + t + '</span>').join('');
+
+      const card = document.createElement('div');
+      card.className         = 'room-card';
+      card.id                = 'card-' + room.id;
+      card.style.animationDelay = (i * 0.06) + 's';
+      card.innerHTML =
+        '<div class="room-img-wrap">' +
+          '<img src="' + esc(img) + '" alt="Room ' + esc(room.room_number) + '" loading="lazy"' +
+               ' onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600\'">' +
+          '<span class="room-badge">' + esc(room.room_type) + '</span>' +
+          '<span class="status-pill ' + (isAvail ? 'available' : 'occupied') + '">' +
+            '<span class="status-dot"></span>' + (isAvail ? 'Available' : 'Occupied') +
+          '</span>' +
+        '</div>' +
+        '<div class="room-body">' +
+          '<div class="room-type-tag">' + esc(room.room_type) + '</div>' +
+          '<h3>Room ' + esc(room.room_number) + '</h3>' +
+          '<p class="room-desc">' + esc(room.description || 'Comfortable room with modern amenities.') + '</p>' +
+          '<div class="room-amenities">' + amenities + '</div>' +
+          '<div class="room-footer">' +
+            '<div class="price-block">' +
+              '<div class="price">KES ' + Number(room.price_per_night).toLocaleString() + '</div>' +
+              '<div class="per">per night</div>' +
+            '</div>' +
+            '<div class="room-actions">' +
+              '<button class="btn-check" onclick="openDateModal(\'' + room.id + '\')">Check Dates</button>' +
+              (isAvail
+                ? '<a href="/book.html?room=' + esc(room.id) + '" class="btn-book">Book Now</a>'
+                : '<button class="btn-book" style="opacity:.5;cursor:not-allowed" disabled>Occupied</button>'
+              ) +
+            '</div>' +
+          '</div>' +
+          '<div class="avail-result" id="avail-' + room.id + '"></div>' +
+        '</div>';
+
+      grid.appendChild(card);
+    });
+
+  } catch(err) {
+    console.error('loadRoomsPage:', err);
+    loading.style.display = 'block';
+    loading.innerHTML =
+      '<p style="color:#c0392b;font-size:14px;margin-bottom:8px">⚠ Could not load rooms.</p>' +
+      '<p style="color:var(--muted);font-size:13px;margin-bottom:16px">' + esc(err.message) + '</p>' +
+      '<button onclick="loadRoomsPage()" style="padding:10px 22px;background:var(--navy);color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:13px">↺ Retry</button>';
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  FILTERS
+// ════════════════════════════════════════════════════
+function applyFilters() {
+  loadRoomsPage({
+    type:     document.getElementById('f-type').value,
+    minPrice: document.getElementById('f-min').value,
+    maxPrice: document.getElementById('f-max').value,
+    guests:   document.getElementById('f-guests').value,
+    ac:       document.getElementById('f-ac').value,
+  });
+}
+
+function clearFilters() {
+  ['f-type','f-min','f-max','f-guests','f-ac'].forEach(id => { document.getElementById(id).value = ''; });
+  loadRoomsPage();
+}
+
+// ════════════════════════════════════════════════════
+//  DATE MODAL — GET /api/availability?room_id&checkin&checkout
+//  (was a POST to GAS's checkAvailability action; the Express
+//  route is a GET since it's a read-only query — see
+//  server/routes/availability.js)
+// ════════════════════════════════════════════════════
+function openDateModal(roomId) {
+  activeRoomId = roomId;
+  const today = new Date().toISOString().split('T')[0];
+  const ci    = document.getElementById('modal-checkin');
+  const co    = document.getElementById('modal-checkout');
+  ci.min = co.min = today;
+  ci.value = co.value = '';
+  document.getElementById('dateModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('dateModal').classList.remove('open');
+  activeRoomId = null;
+}
+
+async function confirmCheck() {
+  const checkin  = document.getElementById('modal-checkin').value;
+  const checkout = document.getElementById('modal-checkout').value;
+  if (!checkin || !checkout) { alert('Please select both check-in and check-out dates.'); return; }
+  if (checkout <= checkin)   { alert('Check-out must be after check-in.'); return; }
+  const roomId = activeRoomId;
+  closeModal();
+  await checkRoomAvailability(roomId, checkin, checkout);
+}
+
+async function checkRoomAvailability(roomId, checkin, checkout) {
+  const el = document.getElementById('avail-' + roomId);
+  if (!el) return;
+  el.className   = 'avail-result checking';
+  el.textContent = '⏳ Checking availability…';
+
+  try {
+    const data = await apiGet('/availability', {
+      room_id:  roomId,
+      checkin:  checkin,
+      checkout: checkout,
+    });
+
+    if (data.available) {
+      el.className = 'avail-result available';
+      el.innerHTML =
+        '✔ ' + (data.message || 'Available for those dates!') + ' &nbsp;' +
+        '<a href="/book.html?room=' + roomId + '&checkin=' + checkin + '&checkout=' + checkout +
+        '" style="color:inherit;font-weight:700;margin-left:6px">→ Book Now</a>';
+    } else {
+      el.className   = 'avail-result taken';
+      el.textContent = '✖ ' + (data.message || 'Not available for those dates. Please try different dates.');
+    }
+  } catch(err) {
+    el.className   = 'avail-result taken';
+    el.textContent = 'Could not check availability. Please try again.';
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  CHAT — Aria AI Concierge — POST /api/chat
+// ════════════════════════════════════════════════════
+let chatHistory = [];
+let chatOpen    = false;
+let chipsHidden = false;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chatBox').classList.toggle('open', chatOpen);
+  if (chatOpen) {
+    document.getElementById('chatDot').classList.remove('show');
+    document.getElementById('chatInput').focus();
+    chatScroll();
+  }
+}
+
+function chatHideChips() {
+  if (chipsHidden) return;
+  chipsHidden = true;
+  document.getElementById('quickChips').style.display = 'none';
+}
+
+function quickSend(text) {
+  document.getElementById('chatInput').value = text;
+  chatHideChips();
+  sendChat();
+}
+
+function chatScroll() {
+  const el = document.getElementById('chatMsgs');
+  setTimeout(() => el.scrollTop = el.scrollHeight, 60);
+}
+
+function chatTime() {
+  return new Date().toLocaleTimeString('en-KE', { hour:'2-digit', minute:'2-digit' });
+}
+
+function chatEsc(s) {
+  return String(s||'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    .replace(/\n/g,'<br>');
+}
+
+function addChatMsg(text, side) {
+  const wrap  = document.getElementById('chatMsgs');
+  const group = document.createElement('div');
+  group.className = 'msg-group ' + side;
+  if (side === 'bot') {
+    group.innerHTML =
+      '<div class="msg-row"><div class="bot-av">✦</div><div>' +
+      '<div class="msg bot">' + chatEsc(text) + '</div>' +
+      '<div class="msg-time">' + chatTime() + '</div>' +
+      '</div></div>';
+  } else {
+    group.innerHTML =
+      '<div class="msg-row"><div>' +
+      '<div class="msg user">' + chatEsc(text) + '</div>' +
+      '<div class="msg-time">' + chatTime() + '</div>' +
+      '</div></div>';
+  }
+  wrap.appendChild(group);
+  chatScroll();
+}
+
+function addTyping() {
+  const wrap  = document.getElementById('chatMsgs');
+  const group = document.createElement('div');
+  group.className = 'msg-group bot';
+  group.id        = 'chatTypingGroup';
+  group.innerHTML =
+    '<div class="msg-row"><div class="bot-av">✦</div>' +
+    '<div><div class="msg typing"><span></span><span></span><span></span></div></div></div>';
+  wrap.appendChild(group);
+  chatScroll();
+}
+
+function removeTyping() {
+  const el = document.getElementById('chatTypingGroup');
+  if (el) el.remove();
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const btn   = document.getElementById('chatSendBtn');
+  const text  = (input.value || '').trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  btn.disabled = true;
+  chatHideChips();
+
+  addChatMsg(text, 'user');
+  chatHistory.push({ role:'user', content:text });
+  addTyping();
+
+  try {
+    const data = await apiPost('/chat', {
+      message: text,
+      history: chatHistory.slice(-8),
+    });
+
+    removeTyping();
+    const reply = data.reply || 'I\'m sorry, I could not retrieve a response. Please email admin@primewave.co.ke.';
+    addChatMsg(reply, 'bot');
+    chatHistory.push({ role:'assistant', content:reply });
+    if (chatHistory.length > 24) chatHistory = chatHistory.slice(-20);
+
+  } catch(e) {
+    removeTyping();
+    addChatMsg('Connection error. Please email admin@primewave.co.ke or call +254 700 000 000.', 'bot');
+  }
+
+  btn.disabled = false;
+  input.focus();
+}
+
+// ════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  initAuthNav();
+
+  document.getElementById('modal-checkin').addEventListener('change', function() {
+    const co = document.getElementById('modal-checkout');
+    co.min = this.value;
+    if (co.value && co.value <= this.value) co.value = '';
+  });
+
+  document.getElementById('dateModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('dateModal')) closeModal();
+  });
+
+  const inp = document.getElementById('chatInput');
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+  });
+  inp.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 80) + 'px';
+  });
+
+  addChatMsg(
+    'Hello! 👋 Welcome to PrimeWave Hotel.\n\nI\'m Aria, your AI concierge. I can help you find the perfect room, check availability, explain our rates, and answer any questions.\n\nHow may I assist you today?',
+    'bot'
+  );
+
+  setTimeout(() => {
+    if (!chatOpen) document.getElementById('chatDot').classList.add('show');
+  }, 3000);
+
+  loadRoomsPage();
+});
+</script>
+<script src="/site.js"></script>
+<script src="/social.js"></script>
+</body>
+</html>

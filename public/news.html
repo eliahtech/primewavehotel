@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="News, offers and events from PrimeWave Hotel, Nairobi.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="PrimeWave Hotel"><meta property="og:title" content="News & Updates | PrimeWave Hotel">
+<meta name="theme-color" content="#0a3d62">
+<title>News & Updates | PrimeWave Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body class="site-page">
+<header class="site-header">
+  <a href="/" class="logo">PRIME<em>WAVE</em></a>
+  <nav class="site-nav" id="siteNav" aria-label="Main">
+    <a href="/">Home</a><a href="/rooms.html">Rooms</a><a href="/about.html">About</a><a href="/services.html">Services</a><a href="/news.html">News</a><a href="/contact.html">Contact</a>
+    <a href="/book.html" class="nav-book">Book Now</a>
+    <a href="/login.html" class="nav-acct" id="navAcct"><span class="av"></span><span class="lb">Sign in</span></a>
+  </nav>
+  <button class="ham" id="siteHam" aria-label="Menu" aria-expanded="false" aria-controls="siteNav">☰</button>
+</header>
+
+<section class="page-hero" id="hero"><span class="tag">Stay in the loop</span><h1>News &amp; Updates</h1><p>Offers, events and announcements from PrimeWave Hotel.</p></section>
+
+<main>
+  <div class="s-wrap" id="listView"><div class="news-grid" id="grid" aria-live="polite"></div><div class="n-empty" id="status">Loading…</div><div class="n-more" id="more" hidden><button class="s-btn" id="moreBtn" type="button">Load more stories</button></div></div>
+  <article class="article" id="articleView" hidden></article>
+</main>
+
+<footer class="site-footer">
+  <div class="fg">
+    <div><a href="/" class="logo">PRIME<em>WAVE</em></a><p>Luxury hospitality in the heart of Nairobi, Kenya. Comfort, elegance and personalised service — every stay.</p><div class="social" data-social></div></div>
+    <div><h4>Quick Links</h4><a href="/">Home</a><a href="/rooms.html">Rooms</a><a href="/book.html">Book Now</a><a href="/services.html">Services</a><a href="/news.html">News</a><a href="/about.html">About Us</a></div>
+    <div><h4>Contact</h4><a href="mailto:zephanjuma@gmail.com">zephanjuma@gmail.com</a><a href="tel:+254115028591">+254 115 028 591</a><a href="/contact.html">Send a message</a></div>
+  </div>
+  <div class="fb">© 2026 PrimeWave Hotel. All rights reserved.</div>
+</footer>
+
+<script src="/news.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var id = new URLSearchParams(location.search).get('id');
+  var next = null, loading = false;
+
+  async function loadList(more) {
+    if (loading) return; loading = true; $('moreBtn').disabled = true;
+    try {
+      var j = await PWNews.get('?limit=9' + (more && next ? '&before=' + encodeURIComponent(next) : ''));
+      if (!more) $('grid').innerHTML = '';
+      $('grid').insertAdjacentHTML('beforeend', (j.data || []).map(PWNews.card).join(''));
+      PWNews.fallbacks($('grid'));
+      next = j.next; $('more').hidden = !next;
+      $('status').textContent = $('grid').children.length ? '' : 'No news yet — please check back soon.';
+      $('status').hidden = !!$('grid').children.length;
+    } catch (e) { $('status').hidden = false; $('status').textContent = 'We could not load the news right now. Please try again shortly.'; }
+    loading = false; $('moreBtn').disabled = false;
+  }
+
+  async function loadArticle() {
+    $('listView').hidden = true; $('hero').hidden = true; $('articleView').hidden = false; $('articleView').innerHTML = '<div class="n-empty">Loading…</div>';
+    try {
+      var j = await PWNews.get('/' + encodeURIComponent(id)), n = j.data;
+      $('articleView').innerHTML = PWNews.article(n); PWNews.fallbacks($('articleView'));
+      document.title = n.title + ' | PrimeWave Hotel';
+      var d = document.querySelector('meta[name=description]'); if (d) d.setAttribute('content', n.summary || n.title);
+      var t = document.querySelector('meta[property="og:title"]'); if (t) t.setAttribute('content', n.title);
+      window.scrollTo(0, 0);
+    } catch (e) {
+      $('articleView').innerHTML = '<a class="back" href="/news.html">← All news</a><div class="n-empty">' + (e.status === 404 ? 'We could not find that story. It may have been removed.' : 'We could not load this story right now.') + '</div>';
+    }
+  }
+
+  $('moreBtn').addEventListener('click', function () { loadList(true); });
+  if (id) loadArticle(); else loadList(false);
+})();
+</script>
+<script src="/site.js"></script>
+<script src="/social.js"></script>
+</body>
+</html>

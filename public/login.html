@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in | PrimeWave Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets.css">
+<style>
+.wrap{max-width:420px;margin:40px auto;padding:0 16px}
+.tabs{display:flex;gap:6px;margin-bottom:6px}.tabs button{flex:1;padding:9px;border:0;background:#e9edf2;border-radius:8px;font:inherit;font-weight:600;font-size:13px;cursor:pointer;color:var(--muted)}
+.tabs button.on{background:var(--navy);color:#fff}
+.pane{display:none}.pane.on{display:block}
+a.lnk{color:var(--navy);font-size:13px;cursor:pointer;text-decoration:underline}
+</style></head><body>
+<header class="top"><a class="logo" href="/">PRIME<em>WAVE</em></a><div><a class="l" href="/rooms.html">Rooms</a><a class="l" href="/contact.html">Contact</a></div></header>
+<div class="wrap"><div class="card">
+  <div class="tabs"><button id="t-in" class="on" onclick="show('in')">Sign in</button><button id="t-up" onclick="show('up')">Create account</button></div>
+
+  <form id="p-in" class="pane on" onsubmit="return login(event)">
+    <label>Email</label><input id="li-email" type="email" autocomplete="username" required>
+    <label>Password</label><input id="li-pass" type="password" autocomplete="current-password" required>
+    <div style="margin-top:18px"><button class="btn" style="width:100%" id="li-btn">Sign in</button></div>
+    <p style="margin-top:14px;text-align:center"><a class="lnk" onclick="show('fp')">Forgot password?</a></p>
+  </form>
+
+  <form id="p-up" class="pane" onsubmit="return register(event)">
+    <label>Full name</label><input id="su-name" required autocomplete="name">
+    <label>Email</label><input id="su-email" type="email" required autocomplete="email">
+    <label>Phone</label><input id="su-phone" type="tel" required autocomplete="tel" placeholder="+254 7XX XXX XXX">
+    <label>National ID (optional, 7–8 digits)</label><input id="su-nid" inputmode="numeric">
+    <label>Password (min 8 characters)</label><input id="su-pass" type="password" minlength="8" maxlength="72" required autocomplete="new-password">
+    <div style="margin-top:18px"><button class="btn" style="width:100%" id="su-btn">Create account</button></div>
+  </form>
+
+  <div id="p-fp" class="pane">
+    <div id="fp1">
+      <p style="color:var(--muted);font-size:13.5px;margin-top:14px">Enter your email and we will send a 6-digit code.</p>
+      <label>Email</label><input id="fp-email" type="email" autocomplete="username">
+      <div style="margin-top:16px"><button class="btn" style="width:100%" onclick="fpRequest(this)">Send code</button></div>
+    </div>
+    <div id="fp2" style="display:none">
+      <label>6-digit code</label><input id="fp-otp" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
+      <div style="margin-top:16px"><button class="btn" style="width:100%" onclick="fpVerify(this)">Verify code</button></div>
+    </div>
+    <div id="fp3" style="display:none">
+      <label>New password (min 8 characters)</label><input id="fp-new" type="password" minlength="8" maxlength="72" autocomplete="new-password">
+      <div style="margin-top:16px"><button class="btn" style="width:100%" onclick="fpComplete(this)">Set new password</button></div>
+    </div>
+    <p style="margin-top:14px;text-align:center"><a class="lnk" onclick="show('in')">Back to sign in</a></p>
+  </div>
+  <div id="msg" class="msg"></div>
+</div></div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+let resetEmail = '', resetToken = '';
+
+function msg(text, ok){ const m=$('msg'); m.textContent=text; m.className='msg '+(ok?'ok':'err'); }
+function show(p){
+  ['in','up','fp'].forEach(k=>$('p-'+k).classList.toggle('on',k===p));
+  $('t-in').classList.toggle('on',p==='in'); $('t-up').classList.toggle('on',p==='up');
+  $('msg').className='msg';
+}
+async function api(path, body){
+  const r = await fetch('/api'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  let j; try{ j = await r.json(); }catch(e){ j = {status:'error',message:'Unexpected server response.'}; }
+  return j;
+}
+// Only ever follow redirects that stay on this site.
+function safeRedirect(){
+  const r = new URLSearchParams(location.search).get('redirect');
+  if(!r) return null;
+  try{ const u = new URL(r, location.origin); if(u.origin===location.origin) return u.pathname+u.search; }catch(e){}
+  return null;
+}
+async function login(e){
+  e.preventDefault(); const b=$('li-btn'); b.disabled=true;
+  try{
+    const j = await api('/auth/login',{email:$('li-email').value,password:$('li-pass').value});
+    if(j.status!=='success'){ msg(j.message||'Sign in failed.'); return false; }
+    sessionStorage.setItem('pw_token', j.token);
+    sessionStorage.setItem('pw_user', JSON.stringify(j.user));
+    const home = {systemowner:'/systemowner.html',owner:'/owner.html',admin:'/admin.html'}[j.user.role] || '/account.html';
+    location.href = safeRedirect() || home;
+  }catch(err){ msg('Network error. Please try again.'); }
+  finally{ b.disabled=false; }
+  return false;
+}
+async function register(e){
+  e.preventDefault(); const b=$('su-btn'); b.disabled=true;
+  try{
+    const j = await api('/auth/register',{name:$('su-name').value,email:$('su-email').value,phone:$('su-phone').value,national_id:$('su-nid').value,password:$('su-pass').value});
+    if(j.status==='success'){ show('in'); $('li-email').value=$('su-email').value; msg('Account created — you can sign in now.',true); }
+    else msg(j.message||'Could not create account.');
+  }catch(err){ msg('Network error. Please try again.'); }
+  finally{ b.disabled=false; }
+  return false;
+}
+async function fpRequest(b){
+  b.disabled=true; resetEmail=$('fp-email').value.trim();
+  const j=await api('/auth/password-reset/request-otp',{email:resetEmail});
+  b.disabled=false;
+  if(j.status==='success'){ $('fp1').style.display='none'; $('fp2').style.display=''; msg(j.message,true); } else msg(j.message);
+}
+async function fpVerify(b){
+  b.disabled=true;
+  const j=await api('/auth/password-reset/verify-otp',{email:resetEmail,otp:$('fp-otp').value});
+  b.disabled=false;
+  if(j.status==='success'){ resetToken=j.reset_token; $('fp2').style.display='none'; $('fp3').style.display=''; msg('Code verified. Choose a new password.',true); } else msg(j.message);
+}
+async function fpComplete(b){
+  b.disabled=true;
+  const j=await api('/auth/password-reset/complete',{email:resetEmail,reset_token:resetToken,new_password:$('fp-new').value});
+  b.disabled=false;
+  if(j.status==='success'){ show('in'); $('li-email').value=resetEmail; msg('Password updated. Please sign in.',true); } else msg(j.message);
+}
+</script></body></html>

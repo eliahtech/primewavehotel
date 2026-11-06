@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Get in touch with PrimeWave Hotel in Nairobi.">
+<meta name="theme-color" content="#0a3d62">
+<title>Contact | PrimeWave Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body class="site-page">
+<header class="site-header">
+  <a href="/" class="logo">PRIME<em>WAVE</em></a>
+  <nav class="site-nav" id="siteNav" aria-label="Main">
+    <a href="/">Home</a>
+    <a href="/rooms.html">Rooms</a>
+    <a href="/about.html">About</a>
+    <a href="/services.html">Services</a>
+    <a href="/news.html">News</a>
+    <a href="/contact.html">Contact</a>
+    <a href="/book.html" class="nav-book">Book Now</a>
+    <a href="/login.html" class="nav-acct" id="navAcct"><span class="av"></span><span class="lb">Sign in</span></a>
+  </nav>
+  <button class="ham" id="siteHam" aria-label="Menu" aria-expanded="false" aria-controls="siteNav">☰</button>
+</header>
+
+<section class="page-hero"><span class="tag">Get in touch</span><h1>Contact Us</h1><p>We are here to assist you — 24 hours a day.</p></section>
+<main><div class="s-wrap"><div class="s-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr))">
+<div class="s-card plain"><div class="b c-form">
+<h3>Send us a message</h3>
+<form id="contactForm">
+<label for="name">Your name</label><input type="text" id="name" autocomplete="name" required>
+<label for="email">Email</label><input type="email" id="email" autocomplete="email" required>
+<label for="phone">Phone (optional)</label><input type="tel" id="phone" autocomplete="tel">
+<label for="message">Message</label><textarea id="message" rows="5" required></textarea>
+<button type="submit" id="sendBtn" class="s-btn">Send message</button>
+</form>
+<p id="response" style="margin-top:12px;font-size:14px" role="status"></p>
+</div></div>
+<div class="s-card plain"><div class="b c-info">
+<h3>Contact information</h3>
+<p><strong>Address:</strong> Nairobi, Kenya</p>
+<p><strong>Phone:</strong> <a href="tel:+254115028591">+254 115 028 591</a></p>
+<p><strong>Email:</strong> <a href="mailto:zephanjuma@gmail.com">zephanjuma@gmail.com</a></p>
+<p><strong>Hours:</strong> Monday – Sunday, 24 hours</p>
+<div class="c-actions"><a href="tel:+254115028591">📞 Call us</a><a class="wa" href="https://wa.me/254115028591" target="_blank" rel="noopener">💬 WhatsApp</a></div>
+<h3 style="margin-top:22px">Follow us</h3><div class="social" data-social></div>
+<div class="c-map"><iframe title="Map of Nairobi" src="https://maps.google.com/maps?q=nairobi&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+</div></div>
+</div></div></main>
+<footer class="site-footer">
+  <div class="fg">
+    <div><a href="/" class="logo">PRIME<em>WAVE</em></a><p>Luxury hospitality in the heart of Nairobi, Kenya. Comfort, elegance and personalised service — every stay.</p><div class="social" data-social></div></div>
+    <div><h4>Quick Links</h4><a href="/">Home</a><a href="/rooms.html">Rooms</a><a href="/book.html">Book Now</a><a href="/services.html">Services</a><a href="/news.html">News</a><a href="/about.html">About Us</a></div>
+    <div><h4>Contact</h4><a href="mailto:zephanjuma@gmail.com">zephanjuma@gmail.com</a><a href="tel:+254115028591">+254 115 028 591</a><a href="/contact.html">Send a message</a></div>
+  </div>
+  <div class="fb">© 2026 PrimeWave Hotel. All rights reserved.</div>
+</footer>
+<script>
+// Replaces the old GAS scriptURL POST (which pointed at a
+// different, unrelated Apps Script deployment) with our own
+// Express endpoint.
+document.getElementById("contactForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const btn = document.getElementById("sendBtn");
+  const responseEl = document.getElementById("response");
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+  responseEl.textContent = "";
+
+  const data = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    message: document.getElementById("message").value,
+  };
+
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const result = await res.json();
+
+    if (result.status === "success") {
+      responseEl.style.color = "#1e8449";
+      responseEl.textContent = "Message sent successfully!";
+      document.getElementById("contactForm").reset();
+    } else {
+      responseEl.style.color = "#c0392b";
+      responseEl.textContent = result.message || "Error sending message.";
+    }
+  } catch (err) {
+    responseEl.style.color = "#c0392b";
+    responseEl.textContent = "Network error — please try again.";
+  }
+
+  btn.disabled = false;
+  btn.textContent = "Send Message";
+});
+</script>
+<script src="/site.js"></script>
+<script src="/social.js"></script>
+</body>
+</html>
